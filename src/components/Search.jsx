@@ -35,9 +35,9 @@ const FormStyle = styled.form`
   
     input{
         border: none;
-        background: #6E8894;
+        background: linear-gradient(to right, #e85733, #f53d0f);
         font-size: 1.2rem;
-        color: #CEEDDB;
+        color: #292421;
         
         padding: 1rem 2.5rem;
         border: none;
@@ -46,13 +46,13 @@ const FormStyle = styled.form`
         width: 100%;
 
         ::placeholder {
-            color: #CEEDDB;
+            color: #ffefe0;
           
           }
     }
     .search-icon{
         
-        color: #2A2D34;
+        color: #ffefe0;
         position: absolute;
         top: 1.2rem;
         left: 1rem;    }

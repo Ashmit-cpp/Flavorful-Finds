@@ -47,7 +47,7 @@ const Nav = styled.div`
     }
     .logo-icon{
       color: white;
-      color: #7FC6A4;
+      color: #e64f29;
       margin: 0.2rem;
  }
    

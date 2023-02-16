@@ -41,29 +41,29 @@ const Slink = styled(NavLink)`
     border-radius: 20%;
     margin-right: 1rem;
     text-decoration: none;
-    background: #6E8894;
+    background: linear-gradient(to right, #ff704d, #f53d0f);
     width: 6rem;
     height: 6rem;
     cursor: pointer;
     transform: scale(0.8);
 
     h4 {
-        color: #2A2D34;
+        color: #ffefe0;
         font-size: 1.2rem;
     }
     svg {
-        color:  #2A2D34;
+        color:  #ffefe0;
         font-size: 1.5rem;
         }
        
     &.active {
-        background: linear-gradient(to right, #537562, #328054);
+        background: #faab36;
         
         svg {
-        color:  #CEEDDB;
+        color:  #292421;
         }
         h4 {
-        color:  #CEEDDB;
+        color:  #292421;
         }
     }
     `;
