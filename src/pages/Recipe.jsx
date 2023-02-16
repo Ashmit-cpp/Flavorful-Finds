@@ -63,18 +63,18 @@ const DetailWrapper = styled.div`
     margin-top: 5rem; 
     margin-bottom: 5rem;
     display: flex;
-    color: #7FC6A4;
+    color: #e64f29;
 
     .active{
-        background: linear-gradient(to right, #537562, #328054);
-        color:  #CEEDDB;
+        background: linear-gradient(to right, ##f83200, #328054);
+        color:  #292421;
     }
     h1{
         margin-bottom: 3rem;
     }
     h2 {
       margin-top: 2rem;
-      color:  #CEEDDB; 
+      color:  #292421; 
       font-size: 1.4rem;
       line-height: 1.8rem;
       font-weight: 100;
@@ -84,7 +84,7 @@ const DetailWrapper = styled.div`
     li {
         font-size: 1.2rem;
         line-height: 2.5rem;
-        color:  #CEEDDB; 
+        color:  #292421; 
         font-weight: 400;
 
     }
@@ -92,7 +92,7 @@ const DetailWrapper = styled.div`
         font-size: 1.2rem;
         line-height: 2.5rem;
         margin-top: 2rem;
-        color:  #CEEDDB; 
+        color:  #292421; 
     }
 `;
 
@@ -103,7 +103,7 @@ cursor: pointer;
 padding: 1rem 2rem;
 font-size: 1.2rem;
 color: #313131;
-background: #6E8894;
+background: #de5b3a;
 border: 2px solid black;
 margin-right: 2rem;
 font-weight: 600;

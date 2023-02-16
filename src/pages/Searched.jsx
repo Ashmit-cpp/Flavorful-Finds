@@ -36,7 +36,7 @@ function Searched() {
 
 const Grid = styled.div`
     display: grid;
-    color: #CEEDDB;
+    color: #292421;
 
     grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
     grid-gap: 3rem;

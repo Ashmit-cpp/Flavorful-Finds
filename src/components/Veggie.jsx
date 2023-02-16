@@ -85,7 +85,7 @@ const Card = styled.div`
     left: 50%;
     bottom: 0%;
     transform: translate(-50%, 0%);
-    color: #CEEDDB;
+    color: #ffefe0;
     width: 100%;
     text-align: center;
     font-weight: 600;
