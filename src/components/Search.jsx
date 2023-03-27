@@ -24,37 +24,35 @@ function Search() {
 }
 
 const FormStyle = styled.form`
-    margin: 2.5rem 15rem;
-    margin-right: 1rem;
+    margin: 1rem 1.5rem 1rem 1.5rem; 
+    margin-right: auto;
     display: flex;
     div{
-        min-width: 5rem;
-        width: 100%;
+        min-width: 2rem;
         position: relative;
     }
   
     input{
+        width: 200%;
+
         border: none;
-        background: linear-gradient(to right, #e85733, #f53d0f);
+        background: #f7c281;
         font-size: 1.2rem;
         color: #292421;
-        
         padding: 1rem 2.5rem;
-        border: none;
         border-radius: 1rem;
         outline: none;
-        width: 100%;
 
         ::placeholder {
-            color: #ffefe0;
+            color: #564F48;
           
           }
     }
     .search-icon{
-        
-        color: #ffefe0;
+        color: #564F48;
         position: absolute;
         top: 1.2rem;
-        left: 1rem;    }
+        left: 1rem;    
+    }
 `;
 export default Search;

@@ -60,13 +60,11 @@ function Recipe() {
 
 
 const DetailWrapper = styled.div` 
-    margin-top: 5rem; 
-    margin-bottom: 5rem;
+    margin: 2rem 2rem; 
     display: flex;
     color: #e64f29;
-
     .active{
-        background: linear-gradient(to right, ##f83200, #328054);
+        background: linear-gradient(to right, #ff704d, #f53d0f);
         color:  #292421;
     }
     h1{
@@ -78,15 +76,12 @@ const DetailWrapper = styled.div`
       font-size: 1.4rem;
       line-height: 1.8rem;
       font-weight: 100;
-
-
     }
     li {
         font-size: 1.2rem;
         line-height: 2.5rem;
         color:  #292421; 
         font-weight: 400;
-
     }
     ul {
         font-size: 1.2rem;
@@ -99,12 +94,12 @@ const DetailWrapper = styled.div`
 
 
 const Button = styled.button`
+border-radius: 10%;
 cursor: pointer;
 padding: 1rem 2rem;
 font-size: 1.2rem;
 color: #313131;
-background: #de5b3a;
-border: 2px solid black;
+background: #ffab40;
 margin-right: 2rem;
 font-weight: 600;
 `;

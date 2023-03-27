@@ -35,11 +35,13 @@ function Searched() {
 
 
 const Grid = styled.div`
+    margin: 1rem 1rem;
+
     display: grid;
     color: #292421;
 
     grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
-    grid-gap: 3rem;
+    grid-gap: 2rem;
  `;
 
 const Card = styled.div`
