@@ -12,7 +12,7 @@ function Popular() {
   }, []);
 
   const getPopular = async () => {
-    const check = localStorage.getItem("popular");
+    const check = localStorage.getItem("popular");  
     if (check) {
       setPopular(JSON.parse(check));
     }
@@ -27,7 +27,7 @@ function Popular() {
   return (
     <div>
       <Wrapper>
-        <h3>Most Popular Picks</h3>
+        <h3>Most Popular Picks 🔥</h3>
         <Splide options={{
           perPage: 4,
           arrowPath: false,
@@ -54,15 +54,15 @@ function Popular() {
     </div>
   );
 }
-const Wrapper = styled.div` 
- margin: 1rem 0rem;
 
+const Wrapper = styled.div` 
+ margin: 1rem 1rem;
 `;
 
 const Card = styled.div` 
   display: flex;
   flex-direction: column; 
-  min-height: 24rem;
+  min-height: 18rem;
   min-width: 4rem;
   border-radius: 2rem;
   position: relative;

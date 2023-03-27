@@ -30,7 +30,7 @@ function Veggie() {
   return (
     <div>
       <Wrapper>
-        <h3>Our Vegeterian Picks</h3>
+        <h3>Our Vegeterian Picks 🌟 </h3>
         <Splide options={{
           perPage: 3,
           arrowPath: false,
@@ -59,17 +59,17 @@ function Veggie() {
 }
 
 const Wrapper = styled.div` 
- margin: 4rem 0rem;
+ margin: 4rem 1rem;
 `;
 
 const Card = styled.div` 
   display: flex;
   flex-direction: column; 
-  min-height: 24rem;
+  min-height: 18rem;
   min-width: 4rem;
   border-radius: 2rem;
-  overflow: hidden;
   position: relative;
+  overflow: hidden;
 
   img {
     border-radius: 2rem;
@@ -85,7 +85,7 @@ const Card = styled.div`
     left: 50%;
     bottom: 0%;
     transform: translate(-50%, 0%);
-    color: #ffefe0;
+    color: #ffefe0  ;
     width: 100%;
     text-align: center;
     font-weight: 600;

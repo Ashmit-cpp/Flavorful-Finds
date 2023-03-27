@@ -30,7 +30,7 @@ function Category() {
 const List = styled.div` 
 display: flex;
 justify-content: center; 
-margin: 2rem 1.5rem;
+margin: 1rem 1.5rem;
 `;
 
 const Slink = styled(NavLink)`
@@ -38,32 +38,32 @@ const Slink = styled(NavLink)`
     justify-content: center;
     flex-direction: column;
     align-items: center; 
-    border-radius: 20%;
+    border-radius: 10%;
     margin-right: 1rem;
     text-decoration: none;
-    background: linear-gradient(to right, #ff704d, #f53d0f);
-    width: 6rem;
-    height: 6rem;
+    background: #FFAB40;
+    width: 50rem;
+    height: 5rem;
     cursor: pointer;
-    transform: scale(0.8);
+    transform: scale(0.75);
 
     h4 {
-        color: #ffefe0;
+        color: #292421;
         font-size: 1.2rem;
     }
     svg {
-        color:  #ffefe0;
-        font-size: 1.5rem;
+        color:  #292421;
+        font-size: 1.6rem;
         }
        
     &.active {
-        background: #faab36;
+        background: linear-gradient(to right, #ff704d, #f53d0f);
         
         svg {
-        color:  #292421;
+        color:  #ffefe0;
         }
         h4 {
-        color:  #292421;
+        color:  #ffefe0;
         }
     }
     `;
