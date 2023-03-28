@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import React, { useCallback, useState, useContext, useEffect } from "react";
 import { auth, provider } from "../Firebase/Firebase";
 import { signInWithPopup } from "firebase/auth";
+import { FaGoogle } from "react-icons/fa"
 
 function Login() {
   const { isLoggedIn, login, logout } = useContext(AuthContext);
@@ -30,13 +31,21 @@ function Login() {
   return (
     <>
       {!isLoggedIn ? (
-        <Btt onClick={handleSignIn}>Login/Register</Btt>
-      ) : (
-        <Btt onClick={handleSignOut}>Sign out</Btt>
+        <Btt onClick={handleSignIn}>
+           <LogoIcon  />
+            Sign In             
+          </Btt>
+        ) : (
+        <Btt onClick={handleSignOut}>Sign Out</Btt>
       )}
     </>
   );
 }
+const LogoIcon = styled(FaGoogle)`
+  color:  #292421;
+  cursor: pointer;
+  margin-right: 5px;
+`;
 
 const Btt = styled.button`
   display: flex;
@@ -48,6 +57,7 @@ const Btt = styled.button`
   border-radius: 0.5rem;
   outline: none;
   cursor: pointer;
+
 `;
 
 export default Login;
