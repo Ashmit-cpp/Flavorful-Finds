@@ -30,7 +30,7 @@ function Recipe() {
                     Instructions
                 </Button>
                 <Button className={activeTab === "ingridients" ? "active" : ''} onClick={() => setActiveTab("ingridients")}>
-                    Ingridients
+                    Ingredients
                 </Button>
                 {activeTab === 'instructions' && (
                     <div>
