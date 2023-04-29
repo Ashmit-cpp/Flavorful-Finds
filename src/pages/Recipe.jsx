@@ -1,24 +1,41 @@
 import React from 'react'
 import styled from "styled-components";
-import { motion } from "framer-motion";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { getFirestore, doc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 
 function Recipe() {
     let params = useParams();
     const [details, setDetails] = useState({});
     const [activeTab, setActiveTab] = useState("Instructions");
+    const [RidAdded, setRidAdded] = useState(false);
+
     const fetchDetails = async () => {
         const data = await fetch(`https://api.spoonacular.com/recipes/${params.name}/information?apiKey=${process.env.REACT_APP_API_KEY}`);
         const detailData = await data.json();
         setDetails(detailData);
-        setActiveTab("instructions")  
-      }
+        setActiveTab("instructions")
+        console.log(params.name);
+    }
 
     useEffect(() => {
         fetchDetails();
     }, [params.name]);
 
+
+    const handleAddRidClick = async () => {
+        const db = getFirestore();
+        const docRef = doc(db, 'user', localStorage.getItem("email"));
+
+        try {
+            await updateDoc(docRef, { RID: arrayUnion(params.name) });
+            setRidAdded(true);
+            console.log('RID added to document!');
+        } catch (error) {
+            console.error('Error adding RID to document: ', error);
+        }
+    }
     return (
         <DetailWrapper>
             <div>
@@ -30,8 +47,16 @@ function Recipe() {
                     Instructions
                 </Button>
                 <Button className={activeTab === "ingridients" ? "active" : ''} onClick={() => setActiveTab("ingridients")}>
-                    Ingredients
+                    Ingridients
                 </Button>
+
+                <Icon onClick={handleAddRidClick} disabled={RidAdded}>
+                    {RidAdded ?
+                        (<AiFillHeart />) :
+                        (<AiOutlineHeart />)
+                    }
+                </Icon>
+
                 {activeTab === 'instructions' && (
                     <div>
                         <h2 dangerouslySetInnerHTML={{ __html: details.summary }}>
@@ -40,14 +65,13 @@ function Recipe() {
                         </h2>
 
                     </div>
-                )} 
+                )}
 
-                {activeTab === 'ingridients' && (
+                {activeTab === 'ingredients' && (
                     <ul>
                         {details.extendedIngredients.map((ingredient) => (
                             <li key={ingredient.id}>{ingredient.original}</li>
                         ))}
-
                     </ul>
                 )}
 
@@ -64,7 +88,7 @@ const DetailWrapper = styled.div`
     display: flex;
     color: #e64f29;
     .active{
-        background: linear-gradient(to right, #ff704d, #f53d0f);
+        background: #ffab40;
         color:  #292421;
     }
     h1{
@@ -94,14 +118,31 @@ const DetailWrapper = styled.div`
 
 
 const Button = styled.button`
-border-radius: 10%;
+border-radius: 7%;
 cursor: pointer;
-padding: 1rem 2rem;
-font-size: 1.2rem;
+padding: 0.3rem 1rem;
+font-size: 1.6rem;
 color: #313131;
-background: #ffab40;
+background: rgba(255,223,183,0.9);
 margin-right: 2rem;
-font-weight: 600;
+font-weight: 500;
+.heart-icon{
+    color: red;
+    font-size: 1.2rem;
+    padding: 0.1rem 0.1rem;
+    font-weight: 900;
+
+    }
+`;
+
+const Icon = styled.button`
+border-radius: 25%;
+cursor: pointer;
+padding: 0.3rem 0.1rem 0.1rem 0.1rem;
+font-size: 1.5rem;
+color: red;
+background: rgba(255,223,183,0.9);
+
 `;
 
 const Info = styled.div`
