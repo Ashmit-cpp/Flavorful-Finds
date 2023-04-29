@@ -6,13 +6,12 @@ import Logout from "./components/Logout";
 import styled from "styled-components";
 import { BrowserRouter } from "react-router-dom";
 import { GiKnifeFork } from "react-icons/gi";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { AuthContext } from "./Firebase/AuthContext";
-import React,{ useCallback, useState, useContext, useEffect } from "react";
+import React,{ useCallback, useState, useContext } from "react";
 
 function App() {
 
-  const auth = useContext(AuthContext); 
   const [isLoggedIn, SetIsLoggedIn] =  useState(false);
 
   const login= useCallback(()=>{
@@ -37,7 +36,7 @@ function App() {
           <GiKnifeFork className="logo-icon"/>
           <Logo to ={"/"} > Flavorful Finds</Logo>
           <Search/>
-          {!auth.isLoggedIn ? (<Login/>) : (<Logout/>   )}
+          {!localStorage.getItem("uid") ? (<Login/>) : (<Logout/>)}
         </Nav>
           <Category />
           <Pages />

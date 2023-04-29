@@ -1,18 +1,16 @@
-import React, { useEffect, useState, useContext } from "react";
-import {auth,provider} from "../Firebase/Firebase";
 import styled from 'styled-components';
 
 function Logout() {
-    const logout =()=>{
-      localStorage.clear()
-      window.location.reload()
+  const logout = () => {
+    localStorage.clear()
+    window.location.reload()
   }
   return (
 
     <div>
       <Btt onClick={logout}>
         Logout
-        </Btt>
+      </Btt>
     </div>
   )
 }
