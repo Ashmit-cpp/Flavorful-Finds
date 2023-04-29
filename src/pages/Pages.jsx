@@ -3,8 +3,8 @@ import Home from "./Home";
 import Cuisine from "./Cuisine";
 import Searched from "./Searched";
 import Recipe from "./Recipe";
+import Favourite from "./Favourite";
 import { Route, Routes } from "react-router-dom";
-import { AnimatePresence } from "framer-motion";
 
 function Pages() {
   return (
@@ -13,6 +13,7 @@ function Pages() {
         <Route path="/cuisine/:type" element={<Cuisine />} />
         <Route path="/searched/:search" element={<Searched />} />
         <Route path="/recipe/:name" element={<Recipe />} />
+        <Route path="/favourite/:name" element={<Favourite />} />
       </Routes> 
   );
 
