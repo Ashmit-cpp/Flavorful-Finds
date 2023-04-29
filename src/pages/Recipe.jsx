@@ -1,10 +1,7 @@
 import React from 'react'
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
-import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getFirestore, doc, updateDoc, arrayUnion } from 'firebase/firestore';
-import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { getFirestore, doc, updateDoc, arrayUnion } from 'firebase/firestore';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 
@@ -14,15 +11,10 @@ function Recipe() {
     const [activeTab, setActiveTab] = useState("Instructions");
     const [RidAdded, setRidAdded] = useState(false);
 
-    const [RidAdded, setRidAdded] = useState(false);
-
     const fetchDetails = async () => {
         const data = await fetch(`https://api.spoonacular.com/recipes/${params.name}/information?apiKey=${process.env.REACT_APP_API_KEY}`);
         const detailData = await data.json();
         setDetails(detailData);
-        setActiveTab("instructions")
-        console.log(params.name);
-    }
         setActiveTab("instructions")
         console.log(params.name);
     }
@@ -31,19 +23,6 @@ function Recipe() {
         fetchDetails();
     }, [params.name]);
 
-
-    const handleAddRidClick = async () => {
-        const db = getFirestore();
-        const docRef = doc(db, 'user', localStorage.getItem("email"));
-
-        try {
-            await updateDoc(docRef, { RID: arrayUnion(params.name) });
-            setRidAdded(true);
-            console.log('RID added to document!');
-        } catch (error) {
-            console.error('Error adding RID to document: ', error);
-        }
-    }
 
     const handleAddRidClick = async () => {
         const db = getFirestore();
@@ -79,14 +58,6 @@ function Recipe() {
                     }
                 </Icon>
 
-
-                <Icon onClick={handleAddRidClick} disabled={RidAdded}>
-                    {RidAdded ?
-                        (<AiFillHeart />) :
-                        (<AiOutlineHeart />)
-                    }
-                </Icon>
-
                 {activeTab === 'instructions' && (
                     <div>
                         <h2 dangerouslySetInnerHTML={{ __html: details.summary }}>
@@ -96,9 +67,7 @@ function Recipe() {
 
                     </div>
                 )}
-                )}
 
-                {activeTab === 'ingredients' && (
                 {activeTab === 'ingredients' && (
                     <ul>
                         {details.extendedIngredients.map((ingredient) => (
@@ -120,7 +89,6 @@ const DetailWrapper = styled.div`
     display: flex;
     color: #e64f29;
     .active{
-        background: #ffab40;
         background: #ffab40;
         color:  #292421;
     }
@@ -152,34 +120,12 @@ const DetailWrapper = styled.div`
 
 const Button = styled.button`
 border-radius: 7%;
-border-radius: 7%;
 cursor: pointer;
-padding: 0.3rem 1rem;
-font-size: 1.6rem;
 padding: 0.3rem 1rem;
 font-size: 1.6rem;
 color: #313131;
 background: rgba(255,223,183,0.9);
-background: rgba(255,223,183,0.9);
 margin-right: 2rem;
-font-weight: 500;
-.heart-icon{
-    color: red;
-    font-size: 1.2rem;
-    padding: 0.1rem 0.1rem;
-    font-weight: 900;
-
-    }
-`;
-
-const Icon = styled.button`
-border-radius: 25%;
-cursor: pointer;
-padding: 0.3rem 0.1rem 0.1rem 0.1rem;
-font-size: 1.5rem;
-color: red;
-background: rgba(255,223,183,0.9);
-
 font-weight: 500;
 .heart-icon{
     color: red;
