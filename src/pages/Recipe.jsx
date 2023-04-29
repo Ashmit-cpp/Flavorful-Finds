@@ -46,8 +46,9 @@ function Recipe() {
                 <Button className={activeTab === "instructions" ? "active" : ''} onClick={() => setActiveTab("instructions")}>
                     Instructions
                 </Button>
-                <Button className={activeTab === "ingridients" ? "active" : ''} onClick={() => setActiveTab("ingridients")}>
-                    Ingridients
+
+                <Button className={activeTab === "ingredients" ? "active" : ''} onClick={() => setActiveTab("ingredients")}>
+                    Ingredients
                 </Button>
 
                 <Icon onClick={handleAddRidClick} disabled={RidAdded}>
