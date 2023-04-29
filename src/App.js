@@ -3,6 +3,7 @@ import Category from "./components/Category";
 import  Search  from "./components/Search";
 import Login from "./components/Login";
 import Logout from "./components/Logout";
+import Favbutton from "./components/Favbutton";
 import styled from "styled-components";
 import { BrowserRouter } from "react-router-dom";
 import { GiKnifeFork } from "react-icons/gi";
@@ -36,6 +37,7 @@ function App() {
           <GiKnifeFork className="logo-icon"/>
           <Logo to ={"/"} > Flavorful Finds</Logo>
           <Search/>
+          {localStorage.getItem("uid") ? (<Favbutton/>) : (<></>)}
           {!localStorage.getItem("uid") ? (<Login/>) : (<Logout/>)}
         </Nav>
           <Category />

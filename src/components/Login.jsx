@@ -4,7 +4,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { auth, provider, db } from "../Firebase/Firebase";
 import { signInWithPopup } from "firebase/auth";
 import { FaGoogle } from "react-icons/fa"
-import { collection, doc, updateDoc } from 'firebase/firestore';
+import { collection, doc, updateDoc, getDoc, setDoc } from 'firebase/firestore';
 
 function Login() {
   const { isLoggedIn, login, logout } = useContext(AuthContext);
@@ -12,31 +12,38 @@ function Login() {
 
   const handleSignIn = () => {
     signInWithPopup(auth, provider).then(async (data) => {
-      //adding a new user to firestore when they sign in 
-      const addUserToFirestore = async (user) => {
-        const usersRef = collection(db, 'user');
-        const userDocRef = doc(usersRef, user.email);
-        console.log(user.uid);
-        try {
-          await updateDoc(userDocRef, user);
-          console.log('User added/updated in Firestore!');
-        } catch (error) {
-          console.error('Error adding/updating user in Firestore: ', error);
+      const userRef = doc(db, 'user', data.user.email);
+  
+      try {
+        const docSnapshot = await getDoc(userRef);
+  
+        if (docSnapshot.exists()) {
+          // Update existing document
+          await updateDoc(userRef, {
+            uid: data.user.uid,
+            name: data.user.displayName,
+            email: data.user.email,
+            photoURL: data.user.photoURL
+          });
+          console.log('User updated in Firestore!');
+        } else {
+          // Create new document
+          await setDoc(userRef, {
+            uid: data.user.uid,
+            name: data.user.displayName,
+            email: data.user.email,
+            photoURL: data.user.photoURL
+          });
+          console.log('New user added to Firestore!');
         }
+      } catch (error) {
+        console.error('Error adding/updating user in Firestore: ', error);
       }
-      const newUser = {
-        uid: data.user.uid,
-        name: data.user.displayName,
-        email: data.user.email,
-        photoURL: data.user.photoURL
-      };
-      addUserToFirestore(newUser);
-
+  
       setValue(data.user.email);
-      localStorage.setItem("email", data.user.email);
-      localStorage.setItem("uid", data.user.uid);
+      localStorage.setItem('email', data.user.email);
+      localStorage.setItem('uid', data.user.uid);
       login();
-
     });
   };
 
