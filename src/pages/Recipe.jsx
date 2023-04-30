@@ -2,14 +2,14 @@ import React from 'react'
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getFirestore, doc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { getFirestore, doc, updateDoc, arrayUnion, getDoc, arrayRemove } from 'firebase/firestore';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 
 function Recipe() {
     let params = useParams();
     const [details, setDetails] = useState({});
     const [activeTab, setActiveTab] = useState("Instructions");
-    const [RidAdded, setRidAdded] = useState(false);
+    const [RidAdded, setRidAdded] = useState();
 
     const fetchDetails = async () => {
         const data = await fetch(`https://api.spoonacular.com/recipes/${params.name}/information?apiKey=${process.env.REACT_APP_API_KEY}`);
@@ -18,25 +18,65 @@ function Recipe() {
         setDetails(detailData);
         setActiveTab("instructions")
         console.log(params.name);
-    }
+    };
 
-    useEffect(() => {
-        fetchDetails();
-    }, [params.name]);
+    //Update favbutton if recipe present in database
+    const updateFav = async () => {
+        const db = getFirestore();
+        const docRef = doc(db, 'user', localStorage.getItem("email"));
 
+        try {
+            const doc = await getDoc(docRef);
+            const currentRids = doc.data().RID || [];
+            let updatedRids;
 
+            if (currentRids.includes(params.name)) {
+                updatedRids = arrayUnion(params.name);
+                setRidAdded(true);
+                console.log('RID added true!');
+            } else {
+                updatedRids = currentRids.filter((rid) => rid !== params.name);
+                setRidAdded(false);
+                console.log('RID removed false!');
+            }
+
+            await updateDoc(docRef, { RID: updatedRids });
+        } catch (error) {
+            console.error('Error updating document: ', error);
+        }
+    };
+
+    //Add or remove recipe from favs
     const handleAddRidClick = async () => {
         const db = getFirestore();
         const docRef = doc(db, 'user', localStorage.getItem("email"));
 
         try {
-            await updateDoc(docRef, { RID: arrayUnion(params.name) });
-            setRidAdded(true);
-            console.log('RID added to document!');
+            const doc = await getDoc(docRef);
+            const currentRids = doc.data().RID || [];
+            let updatedRids;
+
+            if (currentRids.includes(params.name)) {
+                updatedRids = currentRids.filter((rid) => rid !== params.name);
+                setRidAdded(false);
+                console.log('RID removed from document!');
+            } else {
+                updatedRids = arrayUnion(params.name);
+                setRidAdded(true);
+                console.log('RID added to document!');
+            }
+
+            await updateDoc(docRef, { RID: updatedRids });
         } catch (error) {
-            console.error('Error adding RID to document: ', error);
+            console.error('Error updating document: ', error);
         }
-    }
+    };
+
+    useEffect(() => {
+        fetchDetails();
+        updateFav();
+    }, [params.name]);
+
     return (
         <DetailWrapper>
             <div>
@@ -52,10 +92,8 @@ function Recipe() {
                     Ingredients
                 </Button>
 
-                <Icon onClick={handleAddRidClick} disabled={RidAdded}>
-                    {RidAdded ?
-                        (<AiFillHeart />) :
-                        (<AiOutlineHeart />)
+                <Icon onClick={handleAddRidClick} >
+                    {RidAdded ? (<AiFillHeart />) : (<AiOutlineHeart />)
                     }
                 </Icon>
 
