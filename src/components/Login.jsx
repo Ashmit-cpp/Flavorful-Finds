@@ -4,7 +4,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { auth, provider, db } from "../Firebase/Firebase";
 import { signInWithPopup } from "firebase/auth";
 import { FaGoogle } from "react-icons/fa"
-import { collection, doc, updateDoc, getDoc, setDoc } from 'firebase/firestore';
+import {  doc, updateDoc, getDoc, setDoc } from 'firebase/firestore';
 
 function Login() {
   const { isLoggedIn, login, logout } = useContext(AuthContext);
@@ -13,7 +13,6 @@ function Login() {
   const handleSignIn = () => {
     signInWithPopup(auth, provider).then(async (data) => {
       const userRef = doc(db, 'user', data.user.email);
-  
       try {
         const docSnapshot = await getDoc(userRef);
   
