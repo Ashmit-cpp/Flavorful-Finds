@@ -12,6 +12,7 @@ function Favourite() {
   useEffect(() => {
     const docRef = doc(db, 'user', localStorage.getItem('email'));
 
+    //Request Firebase for Rid field of user document
     const saved = onSnapshot(docRef, async (doc) => {
       if (doc.exists) {
         setPosts(doc.data().RID);
@@ -26,17 +27,19 @@ function Favourite() {
   }, []);
 
   useEffect(() => {
+  
     async function fetchData() {
-    
-        const promises = posts.map(async (post) => {
-          const response = await fetch(`https://api.spoonacular.com/recipes/${post}/information?apiKey=${process.env.REACT_APP_API_KEY}`);
-          const data = await response.json();
-          localStorage.setItem(`fav-${post}`, JSON.stringify(data));
-          return data;
-        });
-        const results = await Promise.all(promises);
-        setResults(results);
-      
+
+      //make JSON by fetching recipe using RID from API
+      const promises = posts.map(async (post) => {
+        const response = await fetch(`https://api.spoonacular.com/recipes/${post}/information?apiKey=${process.env.REACT_APP_API_KEY}`);
+        const data = await response.json();
+        localStorage.setItem(`fav-${post}`, JSON.stringify(data));
+        return data;
+      });
+      const results = await Promise.all(promises);
+      setResults(results);
+
     }
 
     if (posts.length > 0) {
@@ -62,7 +65,7 @@ function Favourite() {
   );
 }
 
-  
+
 const Grid = styled.div`
     margin: 1rem 1rem;
 
@@ -88,4 +91,4 @@ const Card = styled.div`
     }
 `;
 
-  export default Favourite
+export default Favourite

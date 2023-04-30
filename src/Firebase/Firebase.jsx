@@ -3,7 +3,7 @@ import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDQgJRWwgw-b8WfnIFI12rBWd8J9uXyx8Y",
+  apiKey: process.env.REACT_APP_FIREBASE_KEY,
   authDomain: "flavorful-finds.firebaseapp.com",
   projectId: "flavorful-finds",
   storageBucket: "flavorful-finds.appspot.com",
