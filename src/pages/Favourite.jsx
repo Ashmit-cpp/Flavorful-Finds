@@ -3,6 +3,7 @@ import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../Firebase/Firebase';
 import styled from "styled-components";
 import { Link, useParams } from "react-router-dom";
+
 function Favourite() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,15 +27,7 @@ function Favourite() {
 
   useEffect(() => {
     async function fetchData() {
-      const check = localStorage.getItem("favs");  
-      if (check) {
-        try {
-          setResults(JSON.parse(check));
-        } catch (error) {
-          console.error('Error parsing JSON:', error);
-        }
-      
-      } else {
+    
         const promises = posts.map(async (post) => {
           const response = await fetch(`https://api.spoonacular.com/recipes/${post}/information?apiKey=${process.env.REACT_APP_API_KEY}`);
           const data = await response.json();
@@ -43,8 +36,7 @@ function Favourite() {
         });
         const results = await Promise.all(promises);
         setResults(results);
-        localStorage.setItem("favs", JSON.stringify(results));
-      }
+      
     }
 
     if (posts.length > 0) {
