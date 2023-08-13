@@ -79,112 +79,153 @@ function Recipe() {
 
     return (
         <DetailWrapper>
-            <div>
-                <h1>{details.title}</h1>
-                <img src={details.image} alt="" />
+          <div className="title-container">
+            <div className="title-content">
+              <h1>{details.title}</h1>
+              <div className="image-container">
+              <img src={details.image} alt="" />
             </div>
-            <Info>
+              <ButtonWrapper>
                 <Button className={activeTab === "instructions" ? "active" : ''} onClick={() => setActiveTab("instructions")}>
-                    Instructions
+                  Instructions
                 </Button>
-
                 <Button className={activeTab === "ingredients" ? "active" : ''} onClick={() => setActiveTab("ingredients")}>
-                    Ingredients
+                  Ingredients
                 </Button>
-
-                <Icon onClick={handleAddRidClick} >
-                    {RidAdded ? (<AiFillHeart />) : (<AiOutlineHeart />)
-                    }
+                <Icon onClick={handleAddRidClick}>
+                  {RidAdded ? (<AiFillHeart />) : (<AiOutlineHeart />)}
                 </Icon>
-
-                {activeTab === 'instructions' && (
-                    <div>
-                        <h2 dangerouslySetInnerHTML={{ __html: details.summary }}>
-                        </h2>
-                        <h2 dangerouslySetInnerHTML={{ __html: details.instructions }}>
-                        </h2>
-
-                    </div>
-                )}
-
-                {activeTab === 'ingredients' && (
-                    <ul>
-                        {details.extendedIngredients.map((ingredient) => (
-                            <li key={ingredient.id}>{ingredient.original}</li>
-                        ))}
-                    </ul>
-                )}
-
-
-            </Info>
+              </ButtonWrapper>
+            </div>
+            
+          </div>
+         <InfoWrapper>
+          {activeTab === 'instructions' && (
+            <div>
+              <h2 dangerouslySetInnerHTML={{ __html: details.summary }}></h2>
+              <h2 dangerouslySetInnerHTML={{ __html: details.instructions }}></h2>
+            </div>
+          )}
+      
+          {activeTab === 'ingredients' && (
+            <ul>
+              {details.extendedIngredients.map((ingredient) => (
+                <li key={ingredient.id}>{ingredient.original}</li>
+              ))}
+            </ul>
+          )}
+          </InfoWrapper>
         </DetailWrapper>
-    )
+      );
 }
 
 
 
-const DetailWrapper = styled.div` 
-    margin: 2rem 2rem; 
+const DetailWrapper = styled.div`
+  margin: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  position: relative;
+  color: #e64f29;
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    margin-left: 1rem;
+
+  }
+
+  .title-container {
     display: flex;
-    color: #e64f29;
-    .active{
-        background: #ffab40;
-        color:  #292421;
-    }
-    h1{
-        margin-bottom: 3rem;
-    }
-    h2 {
-      margin-top: 2rem;
-      color:  #292421; 
-      font-size: 1.4rem;
-      line-height: 1.8rem;
-      font-weight: 100;
-    }
-    li {
-        font-size: 1.2rem;
-        line-height: 2.5rem;
-        color:  #292421; 
-        font-weight: 400;
-    }
-    ul {
-        font-size: 1.2rem;
-        line-height: 2.5rem;
-        margin-top: 2rem;
-        color:  #292421; 
-    }
+    align-items: center;
+  }
+
+  .title-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .image-container {
+    margin-left: 1rem;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  h2 {
+    margin-top: 2rem;
+    color: #292421;
+    font-size: 1.4rem;
+    line-height: 1.8rem;
+    font-weight: 100;
+  }
+
+  li {
+    font-size: 1.2rem;
+    line-height: 2rem;
+    color: #292421;
+    font-weight: 400;
+  }
+
+  ul {
+    font-size: 1.2rem;
+    line-height: 2rem;
+    margin-top: 2rem;
+    color: #292421;
+  }
 `;
 
-
-
 const Button = styled.button`
-border-radius: 7%;
-cursor: pointer;
-padding: 0.3rem 1rem;
-font-size: 1.6rem;
-color: #313131;
-background: rgba(255,223,183,0.9);
-margin-right: 2rem;
-font-weight: 500;
-.heart-icon{
+  border-radius: 7%;
+  cursor: pointer;
+  padding: 0.3rem 1rem;
+  font-size: 1.4rem;
+  color: #313131;
+  background: rgba(255, 223, 183, 0.9);
+  margin-top: 0.5rem;
+  font-weight: 500;
+
+  &.active {
+    background: #ffab40;
+    color: #292421;
+  }
+
+  .heart-icon {
     color: red;
     font-size: 1.2rem;
-    padding: 0.1rem 0.1rem;
     font-weight: 900;
-
-    }
+  }
 `;
 
 const Icon = styled.button`
-border-radius: 25%;
-cursor: pointer;
-padding: 0.3rem 0.1rem 0.1rem 0.1rem;
-font-size: 1.5rem;
-color: red;
-background: rgba(255,223,183,0.9);
+  border-radius: 25%;
+  cursor: pointer;
+  padding: 0.3rem 0.8rem 0.1rem 0.8rem;
+  font-size: 1.4rem;
+  color: red;
+  margin-top: 0.5rem;
+
+  background: rgba(255, 223, 183, 0.9);
+`;
+
+const InfoWrapper = styled.div`
+  margin: 1.5rem;
+  margin-top: 0.5rem;
+
+`;
+const ButtonWrapper = styled.div`
+display: flex;
+flex-direction: row;
+position: relative;
+padding: 1rem;
+button {
+    margin-right: 1rem;
+  }
 
 `;
 
-const Info = styled.div`
-margin-left: 10rem;`;
 export default Recipe
