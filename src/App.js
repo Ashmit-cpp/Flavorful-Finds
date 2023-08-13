@@ -36,7 +36,9 @@ function App() {
         <Nav> 
           <GiKnifeFork className="logo-icon"/>
           <Logo to ={"/"} > Flavorful Finds</Logo>
+          <SearchWrapper>
           <Search/>
+          </SearchWrapper>
           {localStorage.getItem("uid") ? (<Favbutton/>) : (<></>)}
           {!localStorage.getItem("uid") ? (<Login/>) : (<Logout/>)}
         </Nav>
@@ -60,23 +62,24 @@ font-family: 'Lobster Two', cursive;
 `;
 
 const Nav = styled.div`
-
   background: rgba(255, 223, 183, 0.9);
   display: flex;
+  flex-direction: row;
   align-items: center;
   color: #fff;
   padding: 7px;
-    svg{
-      font-size: 1rem;
-    }
-    .logo-icon{
-      font-size: 2.5rem;
-      color: #e64f29;
-      margin: 0.2rem;
- }
-   
-  `;
-
+  svg {
+    font-size: 1rem;
+  }
+  .logo-icon {
+    font-size: 2.5rem;
+    color: #e64f29;
+    margin: 0.2rem;
+  }
+`;
+  const SearchWrapper = styled.div`
+  flex-grow: 1; 
+`;
 export default App;
 
 /// changes check

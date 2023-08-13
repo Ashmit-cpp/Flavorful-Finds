@@ -24,17 +24,14 @@ function Search() {
 }
 
 const FormStyle = styled.form`
-    margin: 1rem 1.5rem 1rem 1.5rem; 
-    margin-right: auto;
-    display: flex;
+    margin: 1rem 1.5rem;     
     div{
-        min-width: 2rem;
+        min-width: 1rem;
         position: relative;
     }
   
     input{
-        width: 200%;
-
+        width: 100%;
         border: none;
         background: #f7c281;
         font-size: 1.2rem;
