@@ -120,6 +120,7 @@ const Logo = styled(Link)`
 
 const DesktopActions = styled.div`
   display: flex;
+  flex-direction: row;
   align-items: center;
   gap: 1rem;
   @media (max-width: 768px) {
