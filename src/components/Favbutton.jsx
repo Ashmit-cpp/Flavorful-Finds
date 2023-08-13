@@ -46,10 +46,8 @@ const Btt = styled.button`
   }
 
   &::before {
-    content: ""; /* Optional icon here, for example, using Font Awesome */
     display: inline-block;
     margin-right: 0.5rem;
-    font-family: "Font Awesome"; /* Replace with the appropriate font */
     font-size: 1.2rem;
     color: #564f48; /* Icon color */
   }

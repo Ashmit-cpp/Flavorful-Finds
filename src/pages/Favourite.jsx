@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { doc, onSnapshot } from 'firebase/firestore';
-import { db } from '../Firebase/Firebase';
+import { useEffect, useState } from "react";
+import { doc, onSnapshot } from "firebase/firestore";
+import { db } from "../Firebase/Firebase";
 import styled from "styled-components";
 import { Link, useParams } from "react-router-dom";
 
@@ -10,14 +10,14 @@ function Favourite() {
   const [results, setResults] = useState([]);
 
   useEffect(() => {
-    const docRef = doc(db, 'user', localStorage.getItem('email'));
+    const docRef = doc(db, "user", localStorage.getItem("email"));
 
     //Request Firebase for Rid field of user document
     const saved = onSnapshot(docRef, async (doc) => {
       if (doc.exists) {
         setPosts(doc.data().RID);
       } else {
-        console.log('No such document!');
+        console.log("No such document!");
       }
       setLoading(false);
     });
@@ -27,19 +27,18 @@ function Favourite() {
   }, []);
 
   useEffect(() => {
-  
     async function fetchData() {
-
       //make JSON by fetching recipe using RID from API
       const promises = posts.map(async (post) => {
-        const response = await fetch(`https://api.spoonacular.com/recipes/${post}/information?apiKey=${process.env.REACT_APP_API_KEY}`);
+        const response = await fetch(
+          `https://api.spoonacular.com/recipes/${post}/information?apiKey=${process.env.REACT_APP_API_KEY}`
+        );
         const data = await response.json();
         localStorage.setItem(`fav-${post}`, JSON.stringify(data));
         return data;
       });
       const results = await Promise.all(promises);
       setResults(results);
-
     }
 
     if (posts.length > 0) {
@@ -48,34 +47,36 @@ function Favourite() {
   }, [posts]);
 
   if (loading) {
-    return <h1>Loading firebase data...</h1>;
+    return <h1>Loading your favourite recipes!!</h1>;
   }
 
   return (
     <Grid>
-      {results.map((item) => (
-        <Card key={item.id}>
-          <Link to={`/recipe/${item.id}`}>
-            <img src={item.image} alt={item.title} />
-            <h4>{item.title}</h4>
-          </Link>
-        </Card>
-      ))}
+      {results
+        .slice()
+        .reverse()
+        .map((item) => (
+          <Card key={item.id}>
+            <Link to={`/recipe/${item.id}`}>
+              <img src={item.image} alt={item.title} />
+              <h4>{item.title}</h4>
+            </Link>
+          </Card>
+        ))}
     </Grid>
   );
 }
 
-
 const Grid = styled.div`
-    margin: 1rem 1rem;
+  margin: 1rem 1rem;
 
-    display: grid;
-    color: #292421;
+  display: grid;
+  color: #292421;
 
-    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
-    grid-gap: 2rem;
- `;
- const Card = styled.div`
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  grid-gap: 2rem;
+`;
+const Card = styled.div`
   background-color: #ffe0bb;
   border-radius: 2rem;
   padding: 1rem;
@@ -124,4 +125,4 @@ const Grid = styled.div`
     box-shadow: none;
   }
 `;
-export default Favourite
+export default Favourite;
