@@ -1,6 +1,6 @@
-import Pages from "./pages/Pages"
+import Pages from "./pages/Pages";
 import Category from "./components/Category";
-import  Search  from "./components/Search";
+import Search from "./components/Search";
 import Login from "./components/Login";
 import Logout from "./components/Logout";
 import Favbutton from "./components/Favbutton";
@@ -9,19 +9,18 @@ import { BrowserRouter } from "react-router-dom";
 import { GiKnifeFork } from "react-icons/gi";
 import { Link } from "react-router-dom";
 import { AuthContext } from "./Firebase/AuthContext";
-import React,{ useCallback, useState, useContext } from "react";
+import React, { useCallback, useState, useContext } from "react";
 
 function App() {
+  const [isLoggedIn, SetIsLoggedIn] = useState(false);
 
-  const [isLoggedIn, SetIsLoggedIn] =  useState(false);
-
-  const login= useCallback(()=>{
+  const login = useCallback(() => {
     SetIsLoggedIn(true);
-  },[]);
+  }, []);
 
-  const logout= useCallback(()=>{
+  const logout = useCallback(() => {
     SetIsLoggedIn(false);
-  },[]);
+  }, []);
 
   const contextValue = {
     isLoggedIn,
@@ -31,34 +30,31 @@ function App() {
 
   return (
     <div className="App">
-      <AuthContext.Provider value={contextValue}>  
+      <AuthContext.Provider value={contextValue}>
         <BrowserRouter>
-        <Nav> 
-          <GiKnifeFork className="logo-icon"/>
-          <Logo to ={"/"} > Flavorful Finds</Logo>
-          <SearchWrapper>
-          <Search/>
-          </SearchWrapper>
-          {localStorage.getItem("uid") ? (<Favbutton/>) : (<></>)}
-          {!localStorage.getItem("uid") ? (<Login/>) : (<Logout/>)}
-        </Nav>
+          <Nav>
+            <GiKnifeFork className="logo-icon" />
+            <Logo to={"/"}> Flavorful Finds</Logo>
+            <SearchWrapper>
+              <Search />
+            </SearchWrapper>
+            {isLoggedIn ? <Favbutton /> : <></>}
+            {isLoggedIn ? <Logout /> : <Login />}
+          </Nav>
           <Category />
           <Pages />
         </BrowserRouter>
       </AuthContext.Provider>
-
     </div>
   );
 }
 
-
-const Logo = styled (Link)` 
-margin: 1rem 2rem 1rem 0rem; 
-text-decoration: none; 
-font-size: 1.5rem; 
-font-weight: 400;
-font-family: 'Lobster Two', cursive;
-
+const Logo = styled(Link)`
+  margin: 1rem 2rem 1rem 0rem;
+  text-decoration: none;
+  font-size: 1.5rem;
+  font-weight: 400;
+  font-family: "Lobster Two", cursive;
 `;
 
 const Nav = styled.div`
@@ -77,9 +73,7 @@ const Nav = styled.div`
     margin: 0.2rem;
   }
 `;
-  const SearchWrapper = styled.div`
-  flex-grow: 1; 
+const SearchWrapper = styled.div`
+  flex-grow: 1;
 `;
 export default App;
-
-/// changes check

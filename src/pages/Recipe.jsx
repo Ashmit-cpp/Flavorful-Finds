@@ -180,15 +180,31 @@ const DetailWrapper = styled.div`
 `;
 
 const Button = styled.button`
-  border-radius: 7%;
-  cursor: pointer;
-  padding: 0.3rem 1rem;
-  font-size: 1.4rem;
-  color: #313131;
-  background: rgba(255, 223, 183, 0.9);
-  margin-top: 0.5rem;
-  font-weight: 500;
+display: flex;
+align-items: center;
+justify-content: center;
+border: none;
+background: rgba(255, 223, 183, 0.9);
+font-size: 1rem;
+color: #292421;
+padding: 1rem 0.8rem;
+border-radius: 0.5rem;
+outline: none;
+cursor: pointer;
+margin: 2px;
+transition: background 0.3s ease, box-shadow 0.3s ease;
+position: relative;
+overflow: hidden;
 
+&:hover {
+  background: #ffca7a;
+  box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.2);
+}
+
+&:focus {
+  outline: none;
+  box-shadow: 0 0 0 0.2rem rgba(255, 171, 64, 0.9);
+}
   &.active {
     background: #ffab40;
     color: #292421;
@@ -208,8 +224,33 @@ const Icon = styled.button`
   font-size: 1.4rem;
   color: red;
   margin-top: 0.5rem;
-
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
   background: rgba(255, 223, 183, 0.9);
+  outline: none;
+  cursor: pointer;
+  margin: 1px;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  
+  &:hover {
+    background: #ffca7a;
+    box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.2);
+  }
+  
+    &.active {
+      background: #ffab40;
+      color: #292421;
+    }
+  
+    .heart-icon {
+      color: red;
+      font-size: 1.2rem;
+      font-weight: 900;
+    }
 `;
 
 const InfoWrapper = styled.div`
