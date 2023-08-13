@@ -32,7 +32,7 @@ function Veggie() {
       <Wrapper>
         <h3>Our Vegeterian Picks 🌟 </h3>
         <Splide options={{
-          perPage: 3,
+          perPage: 4,
           arrowPath: false,
           pagination: false,
           drag: "free",
@@ -62,14 +62,26 @@ const Wrapper = styled.div`
  margin: 4rem 1rem;
 `;
 
-const Card = styled.div` 
+const Card = styled.div`
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
   min-height: 18rem;
   min-width: 4rem;
   border-radius: 2rem;
   position: relative;
   overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0.3rem 0.7rem rgba(0, 0, 0, 0.2);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(255, 171, 64, 0.3);
+  }
 
   img {
     border-radius: 2rem;
@@ -79,13 +91,14 @@ const Card = styled.div`
     height: 100%;
     object-fit: cover;
   }
-  p{
+
+  p {
     position: absolute;
     z-index: 10;
     left: 50%;
     bottom: 0%;
     transform: translate(-50%, 0%);
-    color: #ffefe0  ;
+    color: #ffefe0;
     width: 100%;
     text-align: center;
     font-weight: 600;
@@ -95,9 +108,7 @@ const Card = styled.div`
     justify-content: center;
     align-items: center;
   }
-
 `;
-
 const Gradient = styled.div` 
 {  z-index: 3;
   position: absolute;
