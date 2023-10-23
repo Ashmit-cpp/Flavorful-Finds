@@ -12,13 +12,21 @@ function Favbutton() {
 
   return (
     <Btt className="wishlist-Btt" onClick={handleClick}>
-      <AiFillHeart />
-      Favourites
+      <LogoIcon />
+      <span className="button-text">Favourites</span>
     </Btt>
   );
 }
-
+const LogoIcon = styled(AiFillHeart)`
+  color: #292421;
+  cursor: pointer;
+  margin-right: 4px;
+  margin-bottom: 2px;
+  font-size: 1.2rem;
+`;
 const Btt = styled.button`
+  min-width: 2rem;
+  margin-right: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -30,7 +38,6 @@ const Btt = styled.button`
   border-radius: 0.5rem;
   outline: none;
   cursor: pointer;
-  margin-right: 1rem;
   transition: background 0.3s ease, box-shadow 0.3s ease;
   position: relative;
   overflow: hidden;
@@ -46,15 +53,17 @@ const Btt = styled.button`
   }
 
   &::before {
+    content: '';
     display: inline-block;
     margin-right: 0.5rem;
+    font-family: 'Font Awesome'; /* Replace with the appropriate font */
     font-size: 1.2rem;
     color: #564f48; /* Icon color */
   }
 
   /* Ripple effect */
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     top: 50%;
     left: 50%;
@@ -70,7 +79,22 @@ const Btt = styled.button`
     width: 150%;
     height: 150%;
   }
-`;
 
+  @media (max-width: 768px) {
+    padding: 0.05rem 0.5rem;
+    font-weight: 600;
+    .button-text {
+      display: none;
+    }
+    ${LogoIcon} {
+      font-size: 3rem;
+      display: block;
+    }
+    &::before {
+      font-size: 1rem;
+      margin-right: 0.4rem;
+    }
+  }
+`;
 
 export default Favbutton;

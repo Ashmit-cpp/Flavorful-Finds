@@ -4,51 +4,57 @@ import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 
 function Category() {
-    return (
-        <List>
-            <Slink to={'/cuisine/Indian'}>
-                <FaPizzaSlice />
-                <h4>Indian</h4>
-            </Slink>
-            <Slink to={'/cuisine/American'}>
-                <FaHamburger />
-                <h4>American</h4>
-            </Slink>
-            <Slink to={'/cuisine/Thai'}>
-                <GiNoodles />
-                <h4>Thai</h4>
-            </Slink>
-            <Slink to={'/cuisine/Chinese'}>
-                <GiBowlOfRice />
-                <h4>Chinese</h4>
-            </Slink>
-        </List>
-    );
+  return (
+    <List>
+      <Slink to={'/cuisine/Indian'}>
+        <FaPizzaSlice />
+        <h4>Indian</h4>
+      </Slink>
+      <Slink to={'/cuisine/American'}>
+        <FaHamburger />
+        <h4>American</h4>
+      </Slink>
+      <Slink to={'/cuisine/Thai'}>
+        <GiNoodles />
+        <h4>Thai</h4>
+      </Slink>
+      <Slink to={'/cuisine/Chinese'}>
+        <GiBowlOfRice />
+        <h4>Chinese</h4>
+      </Slink>
+    </List>
+  );
 }
 
-
-const List = styled.div` 
-display: flex;
-justify-content: center; 
-margin: 1rem 1.5rem;
+const List = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 0.1rem; 
+  margin: 1rem 0.1rem;
+  @media (max-width: 768px) {
+    max-width: 700px; 
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+  }
 `;
 
 const Slink = styled(NavLink)`
   display: flex;
+  padding: 0.5rem;
   justify-content: center;
   flex-direction: column;
   align-items: center;
   border-radius: 10%;
-  margin-right: 1rem;
   text-decoration: none;
   background: #ffab40;
-  width: 50rem;
-  height: 5rem;
   cursor: pointer;
   transform: scale(0.75);
   position: relative;
   overflow: hidden;
   transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+  width: 16rem;
+  min-width: 90px;
 
   h4 {
     color: #292421;
@@ -72,12 +78,12 @@ const Slink = styled(NavLink)`
   }
 
   &::before {
-    content: ""; /* Optional icon here, for example, using Font Awesome */
+    content: "";
     display: inline-block;
     margin-bottom: 0.5rem;
-    font-family: "Font Awesome"; /* Replace with the appropriate font */
+    font-family: "Font Awesome";
     font-size: 1.6rem;
-    color: #564f48; /* Icon color */
+    color: #564f48;
   }
 
   /* Ripple effect */
@@ -111,4 +117,4 @@ const Slink = styled(NavLink)`
   }
 `;
 
-export default Category 
+export default Category;

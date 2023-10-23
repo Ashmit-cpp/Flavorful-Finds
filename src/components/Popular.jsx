@@ -30,11 +30,12 @@ function Popular() {
         <h3>Most Popular Picks 🔥</h3>
         <Splide options={{
           perPage: 3,
-          arrowPath: false,
-          pagination: false,
-          drag: "free",
-          gap: "2rem",
-
+          gap: '2rem',
+          breakpoints: {
+            768: {
+              perPage: 1, 
+            },
+          },
         }}>
           {popular.map((recipe) => {
             return (

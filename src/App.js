@@ -33,13 +33,15 @@ function App() {
       <AuthContext.Provider value={contextValue}>
         <BrowserRouter>
           <Nav>
-            <GiKnifeFork className="logo-icon" />
-            <Logo to={"/"}> Flavorful Finds</Logo>
-            <SearchWrapper>
+            <LogoAndText>
+              <GiKnifeFork className="logo-icon" />
+              <Logo to={"/"}> Flavorful Finds</Logo>
+            </LogoAndText>
+            <NavBottom>
               <Search />
-            </SearchWrapper>
-            {isLoggedIn ? <Favbutton /> : <></>}
-            {isLoggedIn ? <Logout /> : <Login />}
+              {isLoggedIn ? <Favbutton /> : null}
+              {isLoggedIn ? <Logout /> : <Login />}
+            </NavBottom>
           </Nav>
           <Category />
           <Pages />
@@ -49,10 +51,21 @@ function App() {
   );
 }
 
+const LogoAndText = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .logo-icon {
+    font-size: 2.5rem;
+    color: #e64f29;
+    margin-right: 1rem;
+  }
+`;
+
 const Logo = styled(Link)`
-  margin: 1rem 2rem 1rem 0rem;
   text-decoration: none;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: 400;
   font-family: "Lobster Two", cursive;
 `;
@@ -60,20 +73,26 @@ const Logo = styled(Link)`
 const Nav = styled.div`
   background: rgba(255, 223, 183, 0.9);
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex-direction: column;
   color: #fff;
   padding: 7px;
-  svg {
-    font-size: 1rem;
-  }
-  .logo-icon {
-    font-size: 2.5rem;
-    color: #e64f29;
-    margin: 0.2rem;
+
+  @media (min-width: 769px) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
   }
 `;
-const SearchWrapper = styled.div`
-  flex-grow: 1;
+
+const NavBottom = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  @media (min-width: 769px) {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
 `;
+
 export default App;
