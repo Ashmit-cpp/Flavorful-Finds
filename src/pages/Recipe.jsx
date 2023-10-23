@@ -8,6 +8,7 @@ import {
   updateDoc,
   arrayUnion,
   getDoc,
+  arrayRemove,
 } from "firebase/firestore";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 

@@ -5,6 +5,7 @@ import Searched from "./Searched";
 import Recipe from "./Recipe";
 import Favourite from "./Favourite";
 import { Route, Routes } from "react-router-dom";
+import Favbutton from "../components/Favbutton";
 
 function Pages() {
   return (

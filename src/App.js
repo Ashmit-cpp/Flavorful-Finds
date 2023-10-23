@@ -9,7 +9,7 @@ import { BrowserRouter } from "react-router-dom";
 import { GiKnifeFork } from "react-icons/gi";
 import { Link } from "react-router-dom";
 import { AuthContext } from "./Firebase/AuthContext";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useContext } from "react";
 
 function App() {
   const [isLoggedIn, SetIsLoggedIn] = useState(false);
