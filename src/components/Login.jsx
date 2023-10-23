@@ -45,25 +45,23 @@ function Login() {
       login();
     });
   };
-
   return (
-    <>
-      {!isLoggedIn && (
-        <Btt onClick={handleSignIn}>
-          <LogoIcon />
-          Sign In
-        </Btt>
-      )}
-    </>
+    <Btt onClick={handleSignIn}>
+      <LogoIcon />
+      {isLoggedIn ? 'Sign Out' : 'Sign In'}
+    </Btt>
   );
 }
+
 const LogoIcon = styled(FaGoogle)`
   color: #292421;
   cursor: pointer;
-  margin-right: 5px;
+  margin-right: 4px;
+  margin-bottom: 2px;
 `;
 
 const Btt = styled.button`
+  min-width: 7rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -90,17 +88,17 @@ const Btt = styled.button`
   }
 
   &::before {
-    content: ""; /* Optional icon here, for example, using Font Awesome */
+    content: '';
     display: inline-block;
     margin-right: 0.5rem;
-    font-family: "Font Awesome"; /* Replace with the appropriate font */
+    font-family: 'Font Awesome'; /* Replace with the appropriate font */
     font-size: 1.2rem;
     color: #564f48; /* Icon color */
   }
 
   /* Ripple effect */
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     top: 50%;
     left: 50%;
@@ -115,6 +113,17 @@ const Btt = styled.button`
   &:active::after {
     width: 150%;
     height: 150%;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    padding: 1rem 0.5rem;
+    font-weight: 600;
+
+    &::before {
+      font-size: 1rem;
+      margin-right: 0.4rem;
+    }
   }
 `;
 

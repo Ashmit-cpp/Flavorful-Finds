@@ -1,21 +1,19 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 function Logout() {
   const logout = () => {
-    localStorage.clear()
-    window.location.reload()
-  }
+    localStorage.clear();
+    window.location.reload();
+  };
   return (
-
     <div>
-      <Btt onClick={logout}>
-        Logout
-      </Btt>
+      <Btt onClick={logout}>Logout</Btt>
     </div>
-  )
+  );
 }
 
 const Btt = styled.button`
+  min-width: 5rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -27,7 +25,6 @@ const Btt = styled.button`
   border-radius: 0.5rem;
   outline: none;
   cursor: pointer;
-  margin: 2px;
   transition: background 0.3s ease, box-shadow 0.3s ease;
   position: relative;
   overflow: hidden;
@@ -43,17 +40,17 @@ const Btt = styled.button`
   }
 
   &::before {
-    content: ""; /* Optional icon here, for example, using Font Awesome */
+    content: '';
     display: inline-block;
     margin-right: 0.5rem;
-    font-family: "Font Awesome"; /* Replace with the appropriate font */
+    font-family: 'Font Awesome'; /* Replace with the appropriate font */
     font-size: 1.2rem;
     color: #564f48; /* Icon color */
   }
 
   /* Ripple effect */
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     top: 50%;
     left: 50%;
@@ -69,6 +66,18 @@ const Btt = styled.button`
     width: 150%;
     height: 150%;
   }
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    padding: 1rem 0.2rem;
+    font-weight: 600;
+
+    &::before {
+      font-size: 1rem;
+      margin-right: 0.4rem;
+    }
+  }
 `;
 
-export default Logout
+
+export default Logout;
