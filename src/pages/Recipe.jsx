@@ -17,7 +17,8 @@ function Recipe() {
   const [details, setDetails] = useState({});
   const [activeTab, setActiveTab] = useState("Instructions");
   const [RidAdded, setRidAdded] = useState();
-
+  const userEmail = localStorage.getItem("email");
+  console.log(userEmail)
   const fetchDetails = async () => {
     const data = await fetch(
       `https://api.spoonacular.com/recipes/${params.name}/information?apiKey=${process.env.REACT_APP_API_KEY}`
@@ -107,9 +108,14 @@ function Recipe() {
             >
               Ingredients
             </Button>
-            <Icon onClick={handleAddRidClick}>
-              {RidAdded ? <AiFillHeart /> : <AiOutlineHeart />}
-            </Icon>
+            {userEmail && (
+              <Icon
+                onClick={handleAddRidClick}
+                className={RidAdded ? "active" : ""}
+              >
+                {RidAdded ? <AiFillHeart /> : <AiOutlineHeart />}
+              </Icon>
+            )}
           </ButtonWrapper>
         </div>
       </div>

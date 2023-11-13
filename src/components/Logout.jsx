@@ -1,8 +1,10 @@
 import styled from "styled-components";
+import { auth, provider, db } from "../Firebase/Firebase";
 
 function Logout() {
   const logout = () => {
     localStorage.clear();
+    auth.signOut();
     window.location.reload();
   };
   return (

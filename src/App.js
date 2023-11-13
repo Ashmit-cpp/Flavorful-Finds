@@ -9,11 +9,26 @@ import { BrowserRouter } from "react-router-dom";
 import { GiKnifeFork } from "react-icons/gi";
 import { Link } from "react-router-dom";
 import { AuthContext } from "./Firebase/AuthContext";
-import React, { useCallback, useState, useContext } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 
 function App() {
   const [isLoggedIn, SetIsLoggedIn] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+  const updateWindowWidth = () => {
+    setWindowWidth(window.innerWidth);
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", updateWindowWidth);
+    return () => {
+      window.removeEventListener("resize", updateWindowWidth);
+    };
+  }, []);
   const login = useCallback(() => {
     SetIsLoggedIn(true);
   }, []);
@@ -34,27 +49,53 @@ function App() {
         <BrowserRouter>
           <Nav>
             <LogoAndText>
-              <GiKnifeFork className="logo-icon" />
-              <Logo to={"/"}> Flavorful Finds</Logo>
-            </LogoAndText>
-            <NavBottom>
+              <Logo to={"/"}>
+                <GiKnifeFork className="logo-icon" />
+                Flavorful Finds
+              </Logo>
               <Search />
+            </LogoAndText>
+            {windowWidth <= 768 ? (
+              <HamburgerButton onClick={toggleMenu}>
+                <div></div>
+                <div></div>
+                <div></div>
+              </HamburgerButton>
+            ) : (
+              <NavActions>
+                {isLoggedIn ? <Favbutton /> : null}
+                {isLoggedIn ? <Logout /> : <Login />}
+              </NavActions>
+            )}
+          </Nav>
+          {isMenuOpen && windowWidth <= 768 && (
+            <MobileMenu>
               {isLoggedIn ? <Favbutton /> : null}
               {isLoggedIn ? <Logout /> : <Login />}
-            </NavBottom>
-          </Nav>
-          <Category />
-          <Pages />
+            </MobileMenu>
+          )}
+          <MainContent>
+            <Category />
+            <Pages />
+          </MainContent>
         </BrowserRouter>
       </AuthContext.Provider>
     </div>
   );
 }
-
 const LogoAndText = styled.div`
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
+`;
+
+const Logo = styled(Link)`
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  font-size: 1.4rem;
+  font-weight: 500;
+  font-family: "Lobster Two", cursive;
 
   .logo-icon {
     font-size: 2.5rem;
@@ -63,36 +104,74 @@ const LogoAndText = styled.div`
   }
 `;
 
-const Logo = styled(Link)`
-  text-decoration: none;
-  font-size: 1.2rem;
-  font-weight: 400;
-  font-family: "Lobster Two", cursive;
+const HamburgerButton = styled.div`
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+  cursor: pointer;
+
+  div {
+    width: 25px;
+    height: 3px;
+    background-color: #fff;
+    margin: 6px 0;
+    transition: 0.4s;
+  }
+
+  &:hover div {
+    background-color: #e64f29;
+  }
+
+  @media (min-width: 769px) {
+    display: none;
+  }
+`;
+
+const NavActions = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const MobileMenu = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255, 223, 183, 0.9);
+  z-index: 1000;
+  position: absolute;
+  top: 100px;
+  width: 100%;
+  padding: 10px;
 `;
 
 const Nav = styled.div`
+  position: fixed;
+  top: 0;
+  width: 100%;
   background: rgba(255, 223, 183, 0.9);
+  backdrop-filter: blur(5px);
   display: flex;
-  flex-direction: column;
   color: #fff;
-  padding: 7px;
+  z-index: 1000;
+  padding: 2px 8px 0px;
 
   @media (min-width: 769px) {
-    flex-direction: row;
     justify-content: space-between;
-    align-items: center;
   }
 `;
 
-const NavBottom = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
+const MainContent = styled.div`
+  padding-top: 100px;
 
-  @media (min-width: 769px) {
-    flex-direction: row;
-    justify-content: flex-end;
+  @media (max-width: 768px) {
+    padding-top: 120px;
   }
 `;
-
 export default App;

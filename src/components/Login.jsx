@@ -15,7 +15,7 @@ function Login() {
       const userRef = doc(db, "user", data.user.email);
       try {
         const docSnapshot = await getDoc(userRef);
-
+        
         if (docSnapshot.exists()) {
           // Update existing document
           await updateDoc(userRef, {
