@@ -6,6 +6,7 @@ import Recipe from "./Recipe";
 import Favourite from "./Favourite";
 import { Route, Routes } from "react-router-dom";
 import Favbutton from "../components/Favbutton";
+import AddRecipe from "./AddRecipe";
 
 function Pages() {
   return (
@@ -15,6 +16,7 @@ function Pages() {
         <Route path="/searched/:search" element={<Searched />} />
         <Route path="/recipe/:name" element={<Recipe />} />
         <Route path="/Favourite" element={<Favourite />} />
+        <Route path="/newrecipe" element={<AddRecipe />} />
       </Routes> 
   );
 
