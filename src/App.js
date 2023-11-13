@@ -115,7 +115,7 @@ const HamburgerButton = styled.div`
   div {
     width: 25px;
     height: 3px;
-    background-color: #fff;
+    background-color: #564F48;
     margin: 6px 0;
     transition: 0.4s;
   }

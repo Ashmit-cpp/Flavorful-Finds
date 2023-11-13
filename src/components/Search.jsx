@@ -34,21 +34,21 @@ const FormStyle = styled.form`
         width: 100%;
         border: none;
         background: #f7c281;
-        font-size: 1.2rem;
+        font-size: 1rem;
         color: #292421;
         padding: 1rem 2.5rem;
         border-radius: 1rem;
         outline: none;
 
         ::placeholder {
-            color: #564F48;
+            color: #66605a;
           
           }
     }
     .search-icon{
         color: #564F48;
         position: absolute;
-        top: 1.2rem;
+        top: 1rem;
         left: 1rem;    
     }
 `;
