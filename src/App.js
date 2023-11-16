@@ -94,8 +94,7 @@ const Logo = styled(Link)`
   align-items: center;
   text-decoration: none;
   font-size: 1.4rem;
-  font-weight: 500;
-  font-family: "Lobster Two", cursive;
+  font-weight: 100;
 
   .logo-icon {
     font-size: 2.5rem;
@@ -115,7 +114,7 @@ const HamburgerButton = styled.div`
   div {
     width: 25px;
     height: 3px;
-    background-color: #564F48;
+    background-color: #564F48no;
     margin: 6px 0;
     transition: 0.4s;
   }
