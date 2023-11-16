@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import SimilarRecipes from "../components/SimilarRecipes";
 import {
   getFirestore,
   doc,
@@ -18,7 +19,6 @@ function Recipe() {
   const [activeTab, setActiveTab] = useState("Instructions");
   const [RidAdded, setRidAdded] = useState();
   const userEmail = localStorage.getItem("email");
-  console.log(userEmail)
   const fetchDetails = async () => {
     const data = await fetch(
       `https://api.spoonacular.com/recipes/${params.name}/information?apiKey=${process.env.REACT_APP_API_KEY}`
@@ -94,30 +94,33 @@ function Recipe() {
           <div className="image-container">
             <img src={details.image} alt="" />
           </div>
-          <ButtonWrapper>
-            <Button
-              className={activeTab === "instructions" ? "active" : ""}
-              onClick={() => setActiveTab("instructions")}
-            >
-              Instructions
-            </Button>
-            <Button
-              className={activeTab === "ingredients" ? "active" : ""}
-              onClick={() => setActiveTab("ingredients")}
-            >
-              Ingredients
-            </Button>
-            {userEmail && (
-              <Icon
-                onClick={handleAddRidClick}
-                className={RidAdded ? "active" : ""}
-              >
-                {RidAdded ? <AiFillHeart /> : <AiOutlineHeart />}
-              </Icon>
-            )}
-          </ButtonWrapper>
+        </div>
+        <div className="similar-container">
+        <SimilarRecipes />
         </div>
       </div>
+      <ButtonWrapper>
+        <Button
+          className={activeTab === "instructions" ? "active" : ""}
+          onClick={() => setActiveTab("instructions")}
+        >
+          Instructions
+        </Button>
+        <Button
+          className={activeTab === "ingredients" ? "active" : ""}
+          onClick={() => setActiveTab("ingredients")}
+        >
+          Ingredients
+        </Button>
+        {userEmail && (
+          <Icon
+            onClick={handleAddRidClick}
+            className={RidAdded ? "active" : ""}
+          >
+            {RidAdded ? <AiFillHeart /> : <AiOutlineHeart />}
+          </Icon>
+        )}
+      </ButtonWrapper>
       <InfoWrapper>
         {activeTab === "instructions" && (
           <div>
@@ -125,7 +128,6 @@ function Recipe() {
             <h2 dangerouslySetInnerHTML={{ __html: details.instructions }}></h2>
           </div>
         )}
-
         {activeTab === "ingredients" && (
           <ul>
             {details.extendedIngredients.map((ingredient) => (
@@ -136,6 +138,7 @@ function Recipe() {
       </InfoWrapper>
     </DetailWrapper>
   );
+  
 }
 
 const DetailWrapper = styled.div`
@@ -153,8 +156,13 @@ const DetailWrapper = styled.div`
 
   .title-container {
     display: flex;
-    align-items: center;
+    justify-content: space-between;
   }
+
+  .similar-container {
+    justify-content: flex-end;
+  }
+
 
   .title-content {
     display: flex;

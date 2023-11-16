@@ -108,20 +108,16 @@ const HamburgerButton = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-
   cursor: pointer;
+  color: #e64f29;
 
   div {
+    background-color: #e64f29;
     width: 25px;
     height: 3px;
-    background-color: #564F48no;
     margin: 6px 0;
     transition: 0.4s;
-  }
-
-  &:hover div {
-    background-color: #e64f29;
-  }
+  } 
 
   @media (min-width: 769px) {
     display: none;
@@ -132,7 +128,6 @@ const NavActions = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-
   @media (max-width: 768px) {
     display: none;
   }
