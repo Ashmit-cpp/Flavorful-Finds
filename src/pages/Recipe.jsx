@@ -27,7 +27,6 @@ function Recipe() {
     console.log(detailData);
     setDetails(detailData);
     setActiveTab("instructions");
-    console.log(params.name);
   };
 
   //Update favbutton if recipe present in database
@@ -140,7 +139,7 @@ function Recipe() {
 }
 
 const DetailWrapper = styled.div`
-  margin: 1.2rem;
+  margin: 1.2rem 4rem 1.2rem;
   display: flex;
   flex-direction: column;
   align-items: left;
@@ -164,6 +163,7 @@ const DetailWrapper = styled.div`
   }
 
   img {
+    margin-right: 1rem;
     max-width: 100%;
     height: auto;
   }
@@ -189,6 +189,9 @@ const DetailWrapper = styled.div`
     margin-top: 2rem;
     color: #292421;
   }
+  
+  @media (max-width: 768px) {
+    margin: 1rem 1rem 1rem;
 `;
 
 const Button = styled.button`

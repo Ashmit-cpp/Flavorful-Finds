@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { auth, provider, db } from "../Firebase/Firebase";
+import { auth } from "../Firebase/Firebase";
 
 function Logout() {
   const logout = () => {
