@@ -27,7 +27,7 @@ function Searched() {
           <Card key={item.id}>
             <Link to={"/recipe/" + item.id}>
               <img src={item.image} alt="" />
-              <h4>{item.title}</h4>
+              <h2>{item.title}</h2>
             </Link>
           </Card>
         );
@@ -38,17 +38,15 @@ function Searched() {
 
 const Grid = styled.div`
   margin: 1rem 1rem;
-
   display: grid;
   color: #292421;
-
   grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
   grid-gap: 2rem;
 `;
 
 const Card = styled.div`
   background-color: #ffe0bb;
-  border-radius: 2rem;
+  border-radius: 1rem;
   padding: 1rem;
   box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.1);
   display: flex;
@@ -90,7 +88,6 @@ const Card = styled.div`
   }
 
   @media (max-width: 768px) {
-    /* Adjust card styling for mobile devices */
     padding: 0.5rem;
     box-shadow: none;
   }

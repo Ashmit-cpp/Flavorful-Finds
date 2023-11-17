@@ -96,7 +96,11 @@ function Recipe() {
           </div>
         </div>
         <div className="similar-container">
-        <SimilarRecipes />
+          {window.innerWidth > 768 && (
+            <div className="similar-container-mobile">
+              <SimilarRecipes />
+            </div>
+          )}{" "}
         </div>
       </div>
       <ButtonWrapper>
@@ -104,13 +108,13 @@ function Recipe() {
           className={activeTab === "instructions" ? "active" : ""}
           onClick={() => setActiveTab("instructions")}
         >
-          Instructions
+          <bt>Instructions</bt>
         </Button>
         <Button
           className={activeTab === "ingredients" ? "active" : ""}
           onClick={() => setActiveTab("ingredients")}
         >
-          Ingredients
+          <bt>Ingredients</bt>
         </Button>
         {userEmail && (
           <Icon
@@ -124,8 +128,8 @@ function Recipe() {
       <InfoWrapper>
         {activeTab === "instructions" && (
           <div>
-            <h2 dangerouslySetInnerHTML={{ __html: details.summary }}></h2>
-            <h2 dangerouslySetInnerHTML={{ __html: details.instructions }}></h2>
+            <h3 dangerouslySetInnerHTML={{ __html: details.summary }}></h3>
+            <h3 dangerouslySetInnerHTML={{ __html: details.instructions }}></h3>
           </div>
         )}
         {activeTab === "ingredients" && (
@@ -136,22 +140,34 @@ function Recipe() {
           </ul>
         )}
       </InfoWrapper>
+      {window.innerWidth <= 768 && (
+        <div className="similar-container-mobile">
+          <SimilarRecipes />
+        </div>
+      )}
     </DetailWrapper>
   );
-  
 }
 
 const DetailWrapper = styled.div`
-  margin: 1.2rem 4rem 1.2rem;
+  margin: 1.2rem 1.8rem 1.2rem;
   display: flex;
   flex-direction: column;
   align-items: left;
   position: relative;
   color: #e64f29;
 
+  bt {
+    font-size: 1.4rem;
+    font-weight: 100;
+
+    @media (max-width: 768px) {
+      font-size: 0.9rem;
+    }
+  }
   h1 {
     font-size: 2rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
   }
 
   .title-container {
@@ -163,8 +179,8 @@ const DetailWrapper = styled.div`
     justify-content: flex-end;
   }
 
-
   .title-content {
+    padding: 0.4rem;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -177,8 +193,15 @@ const DetailWrapper = styled.div`
   }
 
   h2 {
-    margin-top: 1rem;
-    color: #292421;
+    padding: 0.4rem;
+    color: #e64f29;
+    font-size: 1.4rem;
+    line-height: 1.8rem;
+    font-weight: 100;
+  }
+  h3 {
+    padding: 0.2rem;
+    color: black;
     font-size: 1.4rem;
     line-height: 1.8rem;
     font-weight: 100;
@@ -197,9 +220,10 @@ const DetailWrapper = styled.div`
     margin-top: 2rem;
     color: #292421;
   }
-  
+
   @media (max-width: 768px) {
     margin: 1rem 1rem 1rem;
+  }
 `;
 
 const Button = styled.button`
@@ -232,7 +256,6 @@ const Button = styled.button`
     background: #ffab40;
     color: #292421;
   }
-
   .heart-icon {
     color: red;
     font-size: 1.2rem;
@@ -283,6 +306,7 @@ const InfoWrapper = styled.div`
 
 const ButtonWrapper = styled.div`
   display: flex;
+  font-size: 1.8rem;
   flex-direction: row;
   position: relative;
   padding: 1rem;
