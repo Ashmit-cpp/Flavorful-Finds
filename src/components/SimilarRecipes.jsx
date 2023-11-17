@@ -39,27 +39,27 @@ function SimilarRecipes() {
 }
 
 const Wrapper = styled.div`
-  padding: 1rem;
+  padding: 0.5rem;
   margin: 0.5rem;
-
   background-color: #ffecd6;
-  h2 {
-    align-items: flex-start;
-    padding: 0.4rem;
+  @media (max-width: 768px) {
+    margin: 0.1rem 0.2rem 16rem;
+    max-width: 20rem;
+
   }
 `;
 
 const Grid = styled.div`
   margin: 0.1rem 0.2rem;
   display: grid;
-  max-width: 15rem;
+  max-width: 18rem;
   color: #292421;
   grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
   grid-gap: 0.8rem;
 `;
 
 const Card = styled.div`
-  max-width: 15rem;
+  max-width: 18rem;
   background-color: #ffe0bb;
   border-radius: 0.5rem;
   box-shadow: 0 0.1rem 0.1rem rgba(0, 0, 0, 0.1);
@@ -78,6 +78,7 @@ const Card = styled.div`
   }
 
   h4 {
+    color: black;
     padding: 0.4rem;
   }
 
