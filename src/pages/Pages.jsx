@@ -8,16 +8,16 @@ import { Route, Routes } from "react-router-dom";
 import Favbutton from "../components/Favbutton";
 import AddRecipe from "./AddRecipe";
 
-function Pages() {
+function Pages({ onSearch }) {
   return (
      <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home onSearch={onSearch} />} />
         <Route path="/cuisine/:type" element={<Cuisine />} />
         <Route path="/searched/:search" element={<Searched />} />
         <Route path="/recipe/:name" element={<Recipe />} />
         <Route path="/Favourite" element={<Favourite />} />
         <Route path="/newrecipe" element={<AddRecipe />} />
-      </Routes> 
+      </Routes>
   );
 
 } 

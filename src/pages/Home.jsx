@@ -1,15 +1,12 @@
-import Veggie from "../components/Veggie";
-import Popular from "../components/Popular";
-import React from 'react'
+import Hero from "./Hero";
+import React from "react";
 
-function Home() {
-
+function Home({ onSearch }) {
   return (
     <div>
-      <Popular />
-      <Veggie />
+      <Hero onSearch={onSearch} />
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;
