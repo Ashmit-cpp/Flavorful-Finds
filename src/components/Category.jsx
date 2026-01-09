@@ -1,120 +1,114 @@
+// components/Category.js
 import { FaPizzaSlice, FaHamburger } from "react-icons/fa";
 import { GiNoodles, GiBowlOfRice } from "react-icons/gi";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 
 function Category() {
+  const categories = [
+    { name: "Indian", icon: <FaPizzaSlice />, path: "/cuisine/Indian" },
+    { name: "American", icon: <FaHamburger />, path: "/cuisine/American" },
+    { name: "Thai", icon: <GiNoodles />, path: "/cuisine/Thai" },
+    { name: "Chinese", icon: <GiBowlOfRice />, path: "/cuisine/Chinese" },
+  ];
+
   return (
-    <List>
-      <Slink to={'/cuisine/Indian'}>
-        <FaPizzaSlice />
-        <h4>Indian</h4>
-      </Slink>
-      <Slink to={'/cuisine/American'}>
-        <FaHamburger />
-        <h4>American</h4>
-      </Slink>
-      <Slink to={'/cuisine/Thai'}>
-        <GiNoodles />
-        <h4>Thai</h4>
-      </Slink>
-      <Slink to={'/cuisine/Chinese'}>
-        <GiBowlOfRice />
-        <h4>Chinese</h4>
-      </Slink>
-    </List>
+    <Section>
+      <Wrapper>
+        <Grid>
+          {categories.map((item) => (
+            <CategoryCard key={item.name} to={item.path}>
+              <IconWrapper>{item.icon}</IconWrapper>
+              <h4>{item.name}</h4>
+            </CategoryCard>
+          ))}
+        </Grid>
+      </Wrapper>
+    </Section>
   );
 }
 
-const List = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: 0.1rem; 
-  margin: 1rem 0.1rem;
-  @media (max-width: 768px) {
-    max-width: 700px; 
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, 1fr);
+/* ---------- Styles ---------- */
+
+const Section = styled.section`
+  position: relative;
+  z-index: 2;
+`;
+
+const Wrapper = styled.div`
+  background: #fff;
+  border-radius: 1rem;
+  border: 1px solid #f5f5f4;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.06);
+  padding: 1.25rem;
+  width: 72%;
+  margin: 0 auto;
+
+  @media (min-width: 768px) {
+    padding: 1.75rem;
   }
 `;
 
-const Slink = styled(NavLink)`
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+`;
+
+const CategoryCard = styled(NavLink)`
   display: flex;
-  padding: 0.5rem;
-  justify-content: center;
   flex-direction: column;
   align-items: center;
-  border-radius: 10%;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.75rem 0.5rem;
+  border-radius: 0.75rem;
+  background: #fafaf9;
   text-decoration: none;
-  background: #ffab40;
+  transition: background 0.2s ease, transform 0.2s ease;
   cursor: pointer;
-  transform: scale(0.75);
-  position: relative;
-  overflow: hidden;
-  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-  text-align: center;
-  width: 16rem;
-  min-width: 90px;
 
   h4 {
-    color: #292421;
-    font-size: 1.2rem;
-  }
-
-  svg {
-    color: #292421;
-    font-size: 1.6rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #1c1917;
+    line-height: 1.2;
   }
 
   &:hover {
-    background: #ffca7a;
-    transform: scale(0.8);
-    box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.2);
-  }
+    background: #fff7ed;
+    transform: translateY(-2px);
 
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 0.2rem rgba(255, 171, 64, 0.3);
-  }
+    h4 {
+      color: #c2410c;
+    }
 
-  &::before {
-    content: "";
-    display: inline-block;
-    margin-bottom: 0.5rem;
-    font-family: "Font Awesome";
-    font-size: 1.6rem;
-    color: #564f48;
-  }
-
-  /* Ripple effect */
-  &::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.4);
-    transform: translate(-50%, -50%);
-    transition: width 0.3s ease, height 0.3s ease;
-  }
-
-  &:active::after {
-    width: 150%;
-    height: 150%;
+    svg {
+      color: #c2410c;
+    }
   }
 
   &.active {
-    background: #ff6f4b;
+    background: #ffedd5;
+    border: 1px solid #fed7aa;
 
+    h4,
     svg {
-      color: #ffefe0;
-    }
-    h4 {
-      color: #ffefe0;
+      color: #c2410c;
     }
   }
+`;
+
+const IconWrapper = styled.div`
+  font-size: 1.6rem;
+  color: #57534e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export default Category;

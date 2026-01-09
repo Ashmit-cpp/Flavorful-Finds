@@ -1,119 +1,119 @@
+// components/Popular.js
 import { useEffect, useState } from "react";
-import styled from "styled-components"
+import styled from "styled-components";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
-import '@splidejs/react-splide/css';
+import "@splidejs/react-splide/css";
 import { Link } from "react-router-dom";
 
 function Popular() {
-
   const [popular, setPopular] = useState([]);
+
   useEffect(() => {
     getPopular();
   }, []);
 
   const getPopular = async () => {
-    const check = localStorage.getItem("popular");  
+    const check = localStorage.getItem("popular");
     if (check) {
       setPopular(JSON.parse(check));
-    }
-    else {
-      const api = await fetch(`https://api.spoonacular.com/recipes/random?apiKey=${process.env.REACT_APP_API_KEY}&number=9`);
+    } else {
+      const api = await fetch(
+        `https://api.spoonacular.com/recipes/random?apiKey=${process.env.REACT_APP_API_KEY}&number=9`
+      );
       const data = await api.json();
       localStorage.setItem("popular", JSON.stringify(data.recipes));
       setPopular(data.recipes);
-      console.log(data.recipes);
     }
   };
+
   return (
-    <div>
-      <Wrapper>
-        <h3>Most Popular Picks 🔥</h3>
-        <Splide options={{
-          perPage: 3,
-          gap: '2rem',
+    <Wrapper>
+      <span>Trending Now</span>
+
+      <Splide
+        options={{
+          perPage: 4,
+          arrows: false,
+          pagination: false,
+          drag: "free",
+          gap: "1rem",
           breakpoints: {
-            768: {
-              perPage: 1, 
-            },
+            1024: { perPage: 3 },
+            768: { perPage: 2 },
+            480: { perPage: 1 },
           },
-        }}>
-          {popular.map((recipe) => {
-            return (
-              <SplideSlide key={recipe.id}>
-                <Card>
-                  <Link to = {"/recipe/" + recipe.id}>
-                    <p>{recipe.title}</p>
-                    <img src={recipe.image} alt={recipe.title} /> 
-                  </Link>
-                <Gradient/>
-                </Card>
-              </SplideSlide>
-            );
-          })}
-        </Splide>
-      </Wrapper>
-    </div>
+        }}
+      >
+        {popular.map((recipe) => (
+          <SplideSlide key={recipe.id}>
+            <Card to={`/recipe/${recipe.id}`}>
+              <img src={recipe.image} alt={recipe.title} />
+              <Gradient />
+              <Title>{recipe.title}</Title>
+            </Card>
+          </SplideSlide>
+        ))}
+      </Splide>
+    </Wrapper>
   );
 }
 
-const Wrapper = styled.div` 
- margin: 1rem 1rem;
+/* ---------- Styles ---------- */
+
+const Wrapper = styled.div`
+  margin: 2.5rem 0;
+  padding: 0 2.5rem;
+  span {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: #1c1917;
+  }
 `;
 
-const Card = styled.div`
-  display: flex;
-  flex-direction: column;
-  min-height: 18rem;
-  min-width: 4rem;
-  border-radius: 2rem;
+const Card = styled(Link)`
+  display: block;
   position: relative;
+  height: 14rem;
+  border-radius: 1rem;
   overflow: hidden;
-  cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-
+  background: #000;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin-top: 1rem;
   &:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0.3rem 0.7rem rgba(0, 0, 0, 0.2);
-  }
-
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 0.2rem rgba(255, 171, 64, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 18px rgba(0, 0, 0, 0.15);
   }
 
   img {
-    border-radius: 2rem;
-    position: absolute;
-    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
-
-  p {
-    position: absolute;
-    z-index: 10;
-    left: 50%;
-    bottom: 0%;
-    transform: translate(-50%, 0%);
-    color: #ffefe0;
-    width: 100%;
-    text-align: center;
-    font-weight: 600;
-    font-size: 1rem;
-    height: 40%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
 `;
 
-const Gradient = styled.div` 
-{  z-index: 3;
+const Title = styled.p`
   position: absolute;
+  left: 0;
+  bottom: 0;
   width: 100%;
-  height: 100%;
-  background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7));}
+  padding: 0.6rem 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #fff;
+  z-index: 2;
+  line-height: 1.2;
 `;
 
-export default Popular
+const Gradient = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.75),
+    rgba(0, 0, 0, 0)
+  );
+`;
+
+export default Popular;

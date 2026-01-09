@@ -1,14 +1,13 @@
+import React, { useContext } from "react";
 import { AuthContext } from "../Firebase/AuthContext";
 import styled from "styled-components";
-import React, { useState, useContext, useEffect } from "react";
 import { auth, provider, db } from "../Firebase/Firebase";
 import { signInWithPopup } from "firebase/auth";
 import { FaGoogle } from "react-icons/fa";
 import { doc, updateDoc, getDoc, setDoc } from "firebase/firestore";
 
 function Login() {
-  const { isLoggedIn, login, logout } = useContext(AuthContext);
-  const [value, setValue] = useState("");
+  const { login } = useContext(AuthContext);
 
   const handleSignIn = () => {
     signInWithPopup(auth, provider).then(async (data) => {
@@ -16,114 +15,76 @@ function Login() {
       try {
         const docSnapshot = await getDoc(userRef);
         
+        const userData = {
+          uid: data.user.uid,
+          name: data.user.displayName,
+          email: data.user.email,
+          photoURL: data.user.photoURL,
+        };
+
         if (docSnapshot.exists()) {
-          // Update existing document
-          await updateDoc(userRef, {
-            uid: data.user.uid,
-            name: data.user.displayName,
-            email: data.user.email,
-            photoURL: data.user.photoURL,
-          });
-          console.log("User updated in Firestore!");
+          await updateDoc(userRef, userData);
         } else {
-          // Create new document
-          await setDoc(userRef, {
-            uid: data.user.uid,
-            name: data.user.displayName,
-            email: data.user.email,
-            photoURL: data.user.photoURL,
-          });
-          console.log("New user added to Firestore!");
+          await setDoc(userRef, userData);
         }
       } catch (error) {
-        console.error("Error adding/updating user in Firestore: ", error);
+        console.error("Error managing user in Firestore: ", error);
       }
 
-      setValue(data.user.email);
+      // Store in local storage
       localStorage.setItem("email", data.user.email);
       localStorage.setItem("uid", data.user.uid);
+      
+      // Update Context
       login();
     });
   };
+
   return (
-    <Btt onClick={handleSignIn}>
-      <LogoIcon />
-      {isLoggedIn ? 'Sign Out' : 'Sign In'}
-    </Btt>
+    <GoogleBtn onClick={handleSignIn}>
+      <FaGoogle />
+      <span>Sign in with Google</span>
+    </GoogleBtn>
   );
 }
 
-const LogoIcon = styled(FaGoogle)`
-  color: #292421;
-  cursor: pointer;
-  margin-right: 4px;
-  margin-bottom: 2px;
-`;
-
-const Btt = styled.button`
-  min-width: 7rem;
+const GoogleBtn = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  border: none;
-  background: #ffab40;
-  font-size: 1rem;
-  color: #292421;
-  padding: 1rem 0.8rem;
-  border-radius: 0.5rem;
-  outline: none;
+  gap: 0.8rem;
+  background-color: white;
+  border: 1px solid #e7e5e4; /* stone-200 */
+  color: #313131;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.6rem 1.2rem;
+  border-radius: 2rem; /* Pill shape */
   cursor: pointer;
-  transition: background 0.3s ease, box-shadow 0.3s ease;
-  position: relative;
-  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  min-width: 160px;
+
+  svg {
+    font-size: 1.1rem;
+    color: #DB4437; /* Google Red brand color */
+  }
 
   &:hover {
-    background: #ffca7a;
-    box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.2);
+    background-color: #fcfcfc;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    border-color: #d6d3d1;
   }
 
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 0.2rem rgba(255, 171, 64, 0.3);
-  }
-
-  &::before {
-    content: '';
-    display: inline-block;
-    margin-right: 0.5rem;
-    font-family: 'Font Awesome'; /* Replace with the appropriate font */
-    font-size: 1.2rem;
-    color: #564f48; /* Icon color */
-  }
-
-  /* Ripple effect */
-  &::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.4);
-    transform: translate(-50%, -50%);
-    transition: width 0.3s ease, height 0.3s ease;
-  }
-
-  &:active::after {
-    width: 150%;
-    height: 150%;
+  &:active {
+    transform: translateY(0);
   }
 
   @media (max-width: 768px) {
-    font-size: 1rem;
-    padding: 1rem 0.5rem;
-    font-weight: 600;
-
-    &::before {
-      font-size: 1rem;
-      margin-right: 0.4rem;
-    }
+    width: 100%;
+    justify-content: center;
   }
 `;
 

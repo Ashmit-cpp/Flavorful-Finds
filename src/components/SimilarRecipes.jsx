@@ -1,10 +1,9 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 
 function SimilarRecipes() {
-  const [SimilarRecipes, setSimilarRecipes] = useState([]);
+  const [similarRecipes, setSimilarRecipes] = useState([]);
   let params = useParams();
 
   const getSimilarRecipes = async () => {
@@ -12,91 +11,93 @@ function SimilarRecipes() {
       `https://api.spoonacular.com/recipes/${params.name}/similar?apiKey=${process.env.REACT_APP_API_KEY}&number=4`
     );
     const recipes = await data.json();
-    console.log(recipes);
     setSimilarRecipes(recipes);
   };
 
   useEffect(() => {
     getSimilarRecipes();
-  }, [params.search]);
+  }, [params.name]); // Changed from params.search to params.name to match dependency
 
   return (
-    <Wrapper>
-      <h2>You might also like:</h2>
+    <Container>
+      <h3>You might also like:</h3>
       <Grid>
-        {SimilarRecipes.map((item) => {
+        {similarRecipes.map((item) => {
           return (
             <Card key={item.id}>
               <Link to={"/recipe/" + item.id}>
-                <h4>{item.title}</h4>
+                {/* Note: Similar endpoint sometimes doesn't return images, handling title only nicely */}
+                <div className="card-content">
+                    <h4>{item.title}</h4>
+                    <span className="view-btn">View Recipe</span>
+                </div>
               </Link>
             </Card>
           );
         })}
       </Grid>
-    </Wrapper>
+    </Container>
   );
 }
 
-const Wrapper = styled.div`
-  padding: 0.5rem;
-  margin: 0.5rem;
-  background-color: #ffecd6;
-  @media (max-width: 768px) {
-    margin: 0.1rem 0.2rem 16rem;
-    max-width: 20rem;
-
+const Container = styled.div`
+  margin-top: 2rem;
+  h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
   }
 `;
 
 const Grid = styled.div`
-  margin: 0.1rem 0.2rem;
-  display: grid;
-  max-width: 18rem;
-  color: #292421;
-  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
-  grid-gap: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  @media (max-width: 1024px) {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
 `;
 
 const Card = styled.div`
-  max-width: 18rem;
-  background-color: #ffe0bb;
-  border-radius: 0.5rem;
-  box-shadow: 0 0.1rem 0.1rem rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 0.4rem;
-  position: relative;
-  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  background: white;
+  border-radius: 1rem;
+  overflow: hidden;
+  border: 1px solid #f0f0f0;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.02);
 
   a {
     text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    align-items: right;
+    display: block;
+    padding: 1.5rem;
   }
 
   h4 {
-    color: black;
-    padding: 0.4rem;
+    color: #313131;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.4rem;
+  }
+
+  .view-btn {
+    font-size: 0.7rem;
+    color: #e94057;
+    font-weight: 600;
+    text-transform: uppercase;
   }
 
   &:hover {
-    background-color: #ffedb2;
-    transform: scale(1.02);
-    box-shadow: 0 0.2rem 0.1rem rgba(0, 0, 0, 0.2);
+    border-color: #e94057;
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(233, 64, 87, 0.1);
   }
 
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 0.2rem rgba(255, 171, 64, 0.3);
-  }
-
-  @media (max-width: 768px) {
-    /* Adjust card styling for mobile devices */
-    padding: 0.5rem;
-    box-shadow: none;
+  @media (max-width: 1024px) {
+     &:hover {
+        transform: translateY(-5px);
+     }
   }
 `;
+
 export default SimilarRecipes;
