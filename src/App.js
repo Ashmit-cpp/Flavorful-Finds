@@ -71,6 +71,11 @@ const Nav = styled.nav`
   display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
   background: rgba(18, 17, 15, .93); color: var(--paper);
   border-bottom: 1px solid rgba(242, 237, 228, .12); backdrop-filter: blur(18px);
+
+  @media(max-width:900px){
+    grid-template-columns: minmax(0, 1fr) auto;
+    padding-inline: 1.15rem;
+  }
 `;
 
 const Brand = styled(Link)`display:flex;align-items:center;gap:.8rem;width:max-content;font-family:var(--serif);font-size:2rem;line-height:1;color:var(--paper);`;
@@ -85,7 +90,10 @@ const DesktopLinks = styled.div`
   a{opacity:.72;transition:opacity .2s;color:var(--paper)} a:hover,a.active{opacity:1}
   @media(max-width:900px){display:none}
 `;
-const Actions = styled.div`display:flex;justify-content:flex-end;align-items:center;gap:.7rem;`;
+const Actions = styled.div`
+  display:flex;justify-content:flex-end;align-items:center;gap:.7rem;
+  @media(max-width:900px){grid-column:2}
+`;
 const DesktopAuth = styled.div`@media(max-width:1100px){display:none}`;
 const Concierge = styled.a`
   display:inline-flex;align-items:center;gap:.5rem;padding:.68rem 1rem;border:1px solid rgba(242,237,228,.34);font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
