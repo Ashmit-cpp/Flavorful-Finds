@@ -1,119 +1,14 @@
-// components/Veggie.js
 import { useEffect, useState } from "react";
-import styled from "styled-components";
-import { Splide, SplideSlide } from "@splidejs/react-splide";
-import "@splidejs/react-splide/css";
-import { Link } from "react-router-dom";
+import RecipeCarousel from "./RecipeCarousel";
 
-function Veggie() {
-  const [veggie, setVeggie] = useState([]);
-
+export default function Veggie() {
+  const [recipes, setRecipes] = useState([]);
   useEffect(() => {
-    getVeggie();
+    const cached = localStorage.getItem("veggie");
+    if (cached) { try { setRecipes(JSON.parse(cached)); } catch (_) {} return; }
+    if (!process.env.REACT_APP_API_KEY) return;
+    fetch(`https://api.spoonacular.com/recipes/random?apiKey=${process.env.REACT_APP_API_KEY}&number=9&tags=vegetarian`)
+      .then((res) => res.json()).then((data) => { if (data.recipes) { setRecipes(data.recipes); localStorage.setItem("veggie", JSON.stringify(data.recipes)); } }).catch(() => {});
   }, []);
-
-  const getVeggie = async () => {
-    const check = localStorage.getItem("veggie");
-    if (check) {
-      setVeggie(JSON.parse(check));
-    } else {
-      const api = await fetch(
-        `https://api.spoonacular.com/recipes/random?apiKey=${process.env.REACT_APP_API_KEY}&number=9&tags=vegetarian`
-      );
-      const data = await api.json();
-      localStorage.setItem("veggie", JSON.stringify(data.recipes));
-      setVeggie(data.recipes);
-    }
-  };
-
-  return (
-    <Wrapper>
-      <span>Vegetarian Picks</span>
-
-      <Splide
-        options={{
-          perPage: 4,
-          arrows: false,
-          pagination: false,
-          drag: "free",
-          gap: "1rem",
-          breakpoints: {
-            1024: { perPage: 3 },
-            768: { perPage: 2 },
-            480: { perPage: 1 },
-          },
-        }}
-      >
-        {veggie.map((recipe) => (
-          <SplideSlide key={recipe.id}>
-            <Card to={`/recipe/${recipe.id}`}>
-              <img src={recipe.image} alt={recipe.title} />
-              <Gradient />
-              <Title>{recipe.title}</Title>
-            </Card>
-          </SplideSlide>
-        ))}
-      </Splide>
-    </Wrapper>
-  );
+  return <RecipeCarousel eyebrow="The green table" title="Vegetables, with intent" intro="Plant-led compositions with depth, contrast, and enough theatre to make the centre of the table feel earned." recipes={recipes} vegetarian />;
 }
-
-/* ---------- Styles ---------- */
-
-const Wrapper = styled.div`
-  margin: 2.5rem 0;
-  padding: 0 2.5rem;
-  span {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-    color: #1c1917;
-  }
-`;
-
-const Card = styled(Link)`
-  position: relative;
-  display: block;
-  height: 14rem;
-  border-radius: 1rem;
-  overflow: hidden;
-  background: #000;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  margin-top: 1rem;
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 18px rgba(0, 0, 0, 0.15);
-  }
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-`;
-
-const Title = styled.p`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  padding: 0.6rem 0.75rem;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #fff;
-  z-index: 2;
-  line-height: 1.2;
-`;
-
-const Gradient = styled.div`
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.75),
-    rgba(0, 0, 0, 0)
-  );
-`;
-
-export default Veggie;

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import { AiOutlineHeart } from 'react-icons/ai';
 
 function Favbutton() {
   const navigate = useNavigate();
@@ -17,8 +17,8 @@ function Favbutton() {
     </Btt>
   );
 }
-const LogoIcon = styled(AiFillHeart)`
-  color: #292421;
+const LogoIcon = styled(AiOutlineHeart)`
+  color: currentColor;
   cursor: pointer;
   margin-right: 4px;
   margin-bottom: 2px;
@@ -26,16 +26,19 @@ const LogoIcon = styled(AiFillHeart)`
 `;
 const Btt = styled.button`
   min-width: 2rem;
-  margin-right: 1rem;
+  margin-right: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   border: none;
-  background: #ffab40;
-  font-size: 1rem;
-  color: #292421;
-  padding: 1rem 0.8rem;
-  border-radius: 0.5rem;
+  background: transparent;
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: inherit;
+  padding: .6rem;
+  border-radius: 0;
   outline: none;
   cursor: pointer;
   transition: background 0.3s ease, box-shadow 0.3s ease;
@@ -43,8 +46,7 @@ const Btt = styled.button`
   overflow: hidden;
 
   &:hover {
-    background: #ffca7a;
-    box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.2);
+    color: var(--saffron);
   }
 
   &:focus {

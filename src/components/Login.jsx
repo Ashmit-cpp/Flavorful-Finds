@@ -43,7 +43,7 @@ function Login() {
   return (
     <GoogleBtn onClick={handleSignIn}>
       <FaGoogle />
-      <span>Sign in with Google</span>
+      <span>Sign in</span>
     </GoogleBtn>
   );
 }
@@ -53,29 +53,27 @@ const GoogleBtn = styled.button`
   align-items: center;
   justify-content: center;
   gap: 0.8rem;
-  background-color: white;
-  border: 1px solid #e7e5e4; /* stone-200 */
-  color: #313131;
-  font-family: 'Poppins', sans-serif;
-  font-size: 0.9rem;
-  font-weight: 600;
-  padding: 0.6rem 1.2rem;
-  border-radius: 2rem; /* Pill shape */
+  background: transparent;
+  border: 0;
+  color: inherit;
+  font-family: var(--sans);
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: 0.6rem;
+  border-radius: 0;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-  min-width: 160px;
+  box-shadow: none;
 
   svg {
     font-size: 1.1rem;
-    color: #DB4437; /* Google Red brand color */
+    color: var(--saffron);
   }
 
   &:hover {
-    background-color: #fcfcfc;
-    transform: translateY(-2px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    border-color: #d6d3d1;
+    color: var(--saffron);
   }
 
   &:active {

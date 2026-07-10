@@ -1,67 +1,65 @@
-// GlobalStyle.js
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyles = createGlobalStyle`
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+  :root {
+    --ink: #12110f;
+    --ink-soft: #1c1a17;
+    --paper: #f2ede4;
+    --paper-deep: #e7dfd2;
+    --oxblood: #702d28;
+    --saffron: #d4a85d;
+    --sage: #78806a;
+    --line: rgba(18, 17, 15, 0.16);
+    --serif: "Cormorant Garamond", "Iowan Old Style", "Baskerville", Georgia, serif;
+    --sans: "Manrope", "Avenir Next", "Helvetica Neue", sans-serif;
+  }
 
-    body {
-        margin: 0;
-        font-family: 'Poppins', sans-serif;
-        background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 50%, #ffedd5 100%);
-        color: #313131;
-        -webkit-font-smoothing: antialiased;
-        min-height: 100vh;
-        line-height: 1.6;
-    }
+  *, *::before, *::after { box-sizing: border-box; }
 
-    h1, h2, h3, h4, h5, h6 {
-        font-family: 'Montserrat', sans-serif;
-        line-height: 1.2;
-        color: #1c1917;
-    }
+  html { scroll-behavior: smooth; }
 
-    h3 {
-        font-size: 1.5rem;
-        line-height: 2.5rem;
-        margin-bottom: 1.5rem;
-    }
+  body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
 
-    a {
-        text-decoration: none;
-        color: inherit;
-        transition: color 0.2s ease;
-    }
+  body::selection { background: var(--oxblood); color: var(--paper); }
 
-    button {
-        font-family: inherit;
-        cursor: pointer;
-        border: none;
-        background: none;
-        transition: all 0.2s ease;
-    }
+  h1, h2, h3, h4, p { margin-top: 0; }
+  h1, h2, h3 { font-family: var(--serif); font-weight: 500; line-height: .96; }
+  a { color: inherit; text-decoration: none; }
+  button, input, textarea { font: inherit; }
+  button { cursor: pointer; }
+  img { max-width: 100%; }
 
-    input {
-        font-family: inherit;
-    }
+  :focus-visible {
+    outline: 2px solid var(--saffron);
+    outline-offset: 4px;
+  }
 
-    /* Utility classes for consistent spacing */
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 2rem;
-    }
+  .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    margin: 0 0 1rem;
+    font-size: .68rem;
+    font-weight: 700;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+  }
 
-    .section-spacing {
-        padding: 4rem 0;
-    }
+  .eyebrow::before { content: ""; width: 2.4rem; height: 1px; background: currentColor; opacity: .55; }
 
-    .content-spacing {
-        margin-bottom: 3rem;
-    }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  }
 `;
 
 export default GlobalStyles;

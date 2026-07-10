@@ -27,35 +27,34 @@ const LogoutBtn = styled.button`
   justify-content: center;
   gap: 0.5rem;
   background: transparent;
-  border: 1px solid #e94057; /* Accent Red Border */
-  color: #e94057;
-  font-family: 'Poppins', sans-serif;
-  font-size: 0.9rem;
-  font-weight: 600;
-  padding: 0.6rem 1.2rem;
-  border-radius: 2rem;
+  border: 0;
+  color: inherit;
+  font-family: var(--sans);
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: 0.6rem;
+  border-radius: 0;
   cursor: pointer;
   transition: all 0.3s ease;
-  min-width: 100px;
 
   svg {
     font-size: 1.1rem;
   }
 
   &:hover {
-    background: #e94057;
-    color: white;
-    box-shadow: 0 4px 12px rgba(233, 64, 87, 0.3);
+    color: var(--saffron);
   }
 
   @media (max-width: 768px) {
     width: 100%;
     border: none;
-    background: #ffe4e6;
+    background: transparent;
     margin-top: 1rem;
     
     &:hover {
-        background: #e94057;
+        color: var(--saffron);
     }
   }
 `;

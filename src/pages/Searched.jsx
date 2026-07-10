@@ -1,82 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import styled from "styled-components";
-import Category from "../components/Category";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import RecipeGrid from "../components/RecipeGrid";
 
-function Searched() {
-  const [searchedRecipes, setSearchedRecipes] = useState([]);
-  let params = useParams();
-
-  const getSearched = async (name) => {
-    const data = await fetch(
-      `https://api.spoonacular.com/recipes/complexSearch?apiKey=${process.env.REACT_APP_API_KEY}&query=${name}`
-    );
-    const recipes = await data.json();
-    setSearchedRecipes(recipes.results);
-  };
-
+export default function Searched() {
+  const [recipes, setRecipes] = useState([]);
+  const { search } = useParams();
   useEffect(() => {
-    getSearched(params.search);
-  }, [params.search]);
-
-  return (
-    <>
-      <Category />
-
-      <Grid>
-        {searchedRecipes.map((item) => {
-          return (
-            <Card key={item.id}>
-              <Link to={"/recipe/" + item.id}>
-                <img src={item.image} alt={item.title} />
-                <h4>{item.title}</h4>
-              </Link>
-            </Card>
-          );
-        })}
-      </Grid>
-    </>
-  );
+    if (!process.env.REACT_APP_API_KEY) return;
+    fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${process.env.REACT_APP_API_KEY}&query=${search}`)
+      .then((res) => res.json()).then((data) => setRecipes(data.results || [])).catch(() => {});
+  }, [search]);
+  return <RecipeGrid eyebrow="Sol found" title={search} description="A short, considered edit. Each recipe balances the thing you asked for with season, technique, and the pleasure of the table." recipes={recipes} />;
 }
-
-const Grid = styled.div`
-  padding: 2rem;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-  grid-gap: 3rem;
-  margin: 2rem 0;
-`;
-
-const Card = styled.div`
-  img {
-    width: 100%;
-    border-radius: 2rem;
-    object-fit: cover;
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-  }
-
-  a {
-    text-decoration: none;
-  }
-
-  h4 {
-    text-align: center;
-    padding: 1rem;
-    font-size: 1rem;
-    color: #313131;
-    font-weight: 600;
-  }
-
-  &:hover {
-    img {
-      transform: scale(1.03);
-      box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
-    }
-    h4 {
-      color: #e94057;
-    }
-  }
-`;
-
-export default Searched;

@@ -1,555 +1,86 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useParams, Link } from "react-router-dom";
-import {
-  getFirestore,
-  doc,
-  updateDoc,
-  arrayUnion,
-  arrayRemove,
-  getDoc,
-} from "firebase/firestore";
-import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
-import { BiTime } from "react-icons/bi";
-import { MdRestaurant } from "react-icons/md";
+import { getFirestore, doc, updateDoc, arrayUnion, arrayRemove, getDoc } from "firebase/firestore";
+import { FiArrowLeft, FiClock, FiHeart, FiUsers, FiArrowUpRight } from "react-icons/fi";
 
-function Recipe() {
-  const params = useParams();
-  const id = params.name;
-  const [details, setDetails] = useState({});
-  const [activeTab, setActiveTab] = useState("instructions");
+const fallback = {
+  title: "Charred roots with saffron & sorrel",
+  image: "/sol-hero.png",
+  sourceName: "The Sol kitchen",
+  readyInMinutes: 32,
+  servings: 2,
+  summary: "A deeply savoury, quietly elegant plate built around the sweetness of charred vegetables. Saffron brings warmth; sorrel keeps everything lifted.",
+  extendedIngredients: [
+    { id: 1, original: "8 young carrots, scrubbed" }, { id: 2, original: "A generous knob of cultured butter" },
+    { id: 3, original: "1 pinch saffron threads" }, { id: 4, original: "A small handful of sorrel or tender herbs" },
+    { id: 5, original: "1 lemon, zest and juice" }, { id: 6, original: "Sea salt and cracked black pepper" },
+  ],
+  instructions: "<ol><li>Warm a heavy pan until nearly smoking. Dress the carrots with oil and salt, then char until deeply coloured.</li><li>Lower the heat. Add butter and baste until glossy and just tender.</li><li>Bloom saffron in two tablespoons of warm water. Whisk into the pan juices with lemon.</li><li>Spoon onto a warm plate, finish with sorrel, lemon zest, and a final turn of pepper.</li></ol>"
+};
+
+export default function Recipe() {
+  const { name: id } = useParams();
+  const [details, setDetails] = useState(fallback);
+  const [tab, setTab] = useState("ingredients");
   const [isFav, setIsFav] = useState(false);
-  const [similarRecipes, setSimilarRecipes] = useState([]);
-
+  const [similar, setSimilar] = useState([]);
   const userEmail = localStorage.getItem("email");
 
   useEffect(() => {
-    if (!id) return;
-    setActiveTab("instructions");
-    fetchDetails();
-    checkFavStatus();
-    getSimilarRecipes();
-    window.scrollTo(0, 0);
-  }, [id]);
-
-  const fetchDetails = async () => {
-    try {
-      const res = await fetch(
-        `https://api.spoonacular.com/recipes/${id}/information?apiKey=${process.env.REACT_APP_API_KEY}`
-      );
-      if (!res.ok) throw new Error("Failed to fetch");
-      const json = await res.json();
-      setDetails(json);
-    } catch (e) {
-      console.error("fetchDetails:", e);
-    }
-  };
-
-  const getSimilarRecipes = async () => {
-    try {
-      const data = await fetch(
-        `https://api.spoonacular.com/recipes/${id}/similar?apiKey=${process.env.REACT_APP_API_KEY}&number=6`
-      );
-      const recipes = await data.json();
-      setSimilarRecipes(recipes);
-    } catch (e) {
-      console.error("getSimilarRecipes:", e);
-    }
-  };
-
-  const checkFavStatus = async () => {
-    if (!userEmail) return setIsFav(false);
-    try {
-      const db = getFirestore();
-      const docRef = doc(db, "user", userEmail);
-      const snap = await getDoc(docRef);
-      const current = snap.exists() ? snap.data().RID || [] : [];
-      setIsFav(current.includes(id));
-    } catch (e) {
-      console.error("checkFavStatus:", e);
-    }
-  };
+    window.scrollTo(0, 0); setTab("ingredients");
+    if (!id || !process.env.REACT_APP_API_KEY) return;
+    fetch(`https://api.spoonacular.com/recipes/${id}/information?apiKey=${process.env.REACT_APP_API_KEY}`).then((r) => r.json()).then((data) => { if (data.title) setDetails(data); }).catch(() => {});
+    fetch(`https://api.spoonacular.com/recipes/${id}/similar?apiKey=${process.env.REACT_APP_API_KEY}&number=3`).then((r) => r.json()).then((data) => setSimilar(Array.isArray(data) ? data : [])).catch(() => {});
+    if (userEmail) { const ref = doc(getFirestore(), "user", userEmail); getDoc(ref).then((snap) => setIsFav((snap.data()?.RID || []).includes(id))).catch(() => {}); }
+  }, [id, userEmail]);
 
   const toggleFavorite = async () => {
     if (!userEmail) return;
-    const db = getFirestore();
-    const docRef = doc(db, "user", userEmail);
-
-    try {
-      if (isFav) {
-        await updateDoc(docRef, { RID: arrayRemove(id) });
-        setIsFav(false);
-      } else {
-        await updateDoc(docRef, { RID: arrayUnion(id) });
-        setIsFav(true);
-      }
-    } catch (e) {
-      console.error("toggleFavorite:", e);
-    }
+    try { await updateDoc(doc(getFirestore(), "user", userEmail), { RID: isFav ? arrayRemove(id) : arrayUnion(id) }); setIsFav(!isFav); } catch (_) {}
   };
 
   return (
-    <PageWrapper>
-      <HeroSection>
-        <HeroImageWrapper>
-          <HeroImage src={details.image} alt={details.title} />
-          <ImageOverlay />
-        </HeroImageWrapper>
-        
-        <HeroContent>
-          <RecipeHeader>
-            <div>
-              <RecipeTitle>{details.title}</RecipeTitle>
-              {details.sourceName && <SourceTag>{details.sourceName}</SourceTag>}
-            </div>
-            
-            {userEmail && (
-              <FavButton onClick={toggleFavorite} $active={isFav}>
-                {isFav ? <AiFillHeart /> : <AiOutlineHeart />}
-              </FavButton>
-            )}
-          </RecipeHeader>
+    <Page>
+      <Hero>
+        <Photo src={details.image || fallback.image} alt={details.title} />
+        <Shade />
+        <Back to="/"><FiArrowLeft /> Back to the edit</Back>
+        <HeroCopy><p className="eyebrow">{details.sourceName || "The Sol kitchen"}</p><h1>{details.title}</h1><Meta><span><FiClock />{details.readyInMinutes || 32} minutes</span><span><FiUsers />Serves {details.servings || 2}</span></Meta></HeroCopy>
+        {userEmail && <Save onClick={toggleFavorite} $active={isFav}><FiHeart />{isFav ? "Saved" : "Save"}</Save>}
+      </Hero>
 
-          <MetaInfo>
-            {details.readyInMinutes && (
-              <MetaItem>
-                <BiTime />
-                <span>{details.readyInMinutes} mins</span>
-              </MetaItem>
-            )}
-            {details.servings && (
-              <MetaItem>
-                <MdRestaurant />
-                <span>{details.servings} servings</span>
-              </MetaItem>
-            )}
-          </MetaInfo>
-        </HeroContent>
-      </HeroSection>
+      <Body>
+        <Summary><p className="eyebrow">Why it works</p><div dangerouslySetInnerHTML={{ __html: details.summary || fallback.summary }} /></Summary>
+        <RecipeBody>
+          <Tabs><button onClick={() => setTab("ingredients")} className={tab === "ingredients" ? "active" : ""}>01 Ingredients</button><button onClick={() => setTab("method")} className={tab === "method" ? "active" : ""}>02 Method</button></Tabs>
+          <Panel>
+            {tab === "ingredients" ? <Ingredients>{(details.extendedIngredients || fallback.extendedIngredients).map((item, index) => <li key={`${item.id}-${index}`}><span>{String(index + 1).padStart(2, "0")}</span>{item.original}</li>)}</Ingredients> : <Method dangerouslySetInnerHTML={{ __html: details.instructions || fallback.instructions }} />}
+          </Panel>
+          <SolNote><span>Sol’s note</span><p>Let colour be your cue. The darker the edges, the more character the finished dish will carry.</p></SolNote>
+        </RecipeBody>
 
-      <MainContent>
-        <ContentSection>
-          {details.summary && (
-            <SummaryCard>
-              <div dangerouslySetInnerHTML={{ __html: details.summary }} />
-            </SummaryCard>
-          )}
-
-          <TabNav>
-            <TabButton
-              $active={activeTab === "ingredients"}
-              onClick={() => setActiveTab("ingredients")}
-            >
-              Ingredients
-            </TabButton>
-            <TabButton
-              $active={activeTab === "instructions"}
-              onClick={() => setActiveTab("instructions")}
-            >
-              Instructions
-            </TabButton>
-          </TabNav>
-
-          <ContentCard>
-            {activeTab === "ingredients" && (
-              <IngredientsGrid>
-                {details.extendedIngredients?.map((ingredient) => (
-                  <IngredientItem key={ingredient.id}>
-                    <IngredientCheck />
-                    <span>{ingredient.original}</span>
-                  </IngredientItem>
-                )) || <EmptyState>No ingredients available</EmptyState>}
-              </IngredientsGrid>
-            )}
-
-            {activeTab === "instructions" && (
-              <InstructionsContent
-                dangerouslySetInnerHTML={{ __html: details.instructions || "<p>No instructions available</p>" }}
-              />
-            )}
-          </ContentCard>
-        </ContentSection>
-
-        {similarRecipes.length > 0 && (
-          <SimilarSection>
-            <SectionTitle>You might also like</SectionTitle>
-            <SimilarGrid>
-              {similarRecipes.map((recipe) => (
-                <SimilarCard key={recipe.id} to={`/recipe/${recipe.id}`}>
-                  <SimilarTitle>{recipe.title}</SimilarTitle>
-                  <ViewLink>View Recipe →</ViewLink>
-                </SimilarCard>
-              ))}
-            </SimilarGrid>
-          </SimilarSection>
-        )}
-      </MainContent>
-    </PageWrapper>
+        {similar.length > 0 && <Similar><p className="eyebrow">Continue cooking</p><h2>Something for tomorrow</h2><Grid>{similar.map((recipe) => <Link key={recipe.id} to={`/recipe/${recipe.id}`}><span>{recipe.title}</span><FiArrowUpRight /></Link>)}</Grid></Similar>}
+      </Body>
+    </Page>
   );
 }
 
-const PageWrapper = styled.div`
-  min-height: 100vh;
-  background: linear-gradient(to bottom, #fef3f2 0%, #ffffff 40%);
-`;
-
-const HeroSection = styled.div`
-  position: relative;
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 2rem;
-  
-  @media (max-width: 768px) {
-    padding: 1rem;
-  }
-`;
-
-const HeroImageWrapper = styled.div`
-  position: relative;
-  width: 100%;
-  height: 400px;
-  border-radius: 24px;
-  overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-  
-  @media (max-width: 768px) {
-    height: 300px;
-    border-radius: 16px;
-  }
-`;
-
-const HeroImage = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-`;
-
-const ImageOverlay = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 60%;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
-`;
-
-const HeroContent = styled.div`
-  position: absolute;
-  bottom: 2rem;
-  left: 2rem;
-  right: 2rem;
-  z-index: 2;
-  padding: 2rem;
-  @media (max-width: 768px) {
-    bottom: 1.5rem;
-    left: 1.5rem;
-    right: 1.5rem;
-  }
-`;
-
-const RecipeHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 1rem;
-  margin-bottom: 1rem;
-`;
-
-const RecipeTitle = styled.h1`
-  font-size: 3rem;
-  font-weight: 800;
-  color: white;
-  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
-  line-height: 1.2;
-  margin: 0;
-  
-  @media (max-width: 768px) {
-    font-size: 1.75rem;
-  }
-`;
-
-const SourceTag = styled.span`
-  display: inline-block;
-  margin-top: 0.5rem;
-  padding: 0.4rem 1rem;
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  border-radius: 999px;
-  color: white;
-  font-size: 0.85rem;
-  font-weight: 600;
-`;
-
-const FavButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 56px;
-  height: 56px;
-  background: ${p => p.$active ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.9)'};
-  backdrop-filter: blur(10px);
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-
-  svg {
-    font-size: 1.75rem;
-    color: ${p => p.$active ? '#e94a63' : '#888'};
-    transition: all 0.3s ease;
-  }
-
-  &:hover {
-    transform: scale(1.1);
-    background: white;
-    
-    svg {
-      color: #e94a63;
-    }
-  }
-  
-  @media (max-width: 768px) {
-    width: 48px;
-    height: 48px;
-    
-    svg {
-      font-size: 1.5rem;
-    }
-  }
-`;
-
-const MetaInfo = styled.div`
-  display: flex;
-  gap: 2rem;
-  
-  @media (max-width: 768px) {
-    gap: 1.5rem;
-  }
-`;
-
-const MetaItem = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: white;
-  font-weight: 600;
-  font-size: 1rem;
-  
-  svg {
-    font-size: 1.5rem;
-  }
-  
-  @media (max-width: 768px) {
-    font-size: 0.9rem;
-    
-    svg {
-      font-size: 1.25rem;
-    }
-  }
-`;
-
-const MainContent = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 3rem 2rem;
-  
-  @media (max-width: 768px) {
-    padding: 2rem 1rem;
-  }
-`;
-
-const ContentSection = styled.div`
-  margin-bottom: 4rem;
-`;
-
-const SummaryCard = styled.div`
-  background: white;
-  padding: 2rem;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-  margin-bottom: 2rem;
-  font-size: 1rem;
-  line-height: 1.7;
-  color: #444;
-  
-  a {
-    color: #e94a63;
-    text-decoration: none;
-    font-weight: 600;
-    
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-  
-  @media (max-width: 768px) {
-    padding: 1.5rem;
-    font-size: 0.95rem;
-  }
-`;
-
-const TabNav = styled.div`
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  border-bottom: 2px solid #f0f0f0;
-`;
-
-const TabButton = styled.button`
-  padding: 1rem 2rem;
-  background: none;
-  border: none;
-  border-bottom: 3px solid ${p => p.$active ? '#e94a63' : 'transparent'};
-  color: ${p => p.$active ? '#e94a63' : '#666'};
-  font-size: 1.1rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-bottom: -2px;
-  
-  &:hover {
-    color: #e94a63;
-  }
-  
-  @media (max-width: 768px) {
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-  }
-`;
-
-const ContentCard = styled.div`
-  background: white;
-  padding: 2.5rem;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-  
-  @media (max-width: 768px) {
-    padding: 1.5rem;
-  }
-`;
-
-const IngredientsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1rem;
-`;
-
-const IngredientItem = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem;
-  background: #fafafa;
-  border-radius: 12px;
-  font-size: 0.95rem;
-  color: #333;
-  line-height: 1.5;
-  transition: all 0.2s ease;
-  
-  &:hover {
-    background: #fef3f2;
-    transform: translateX(5px);
-  }
-`;
-
-const IngredientCheck = styled.div`
-  min-width: 20px;
-  min-height: 20px;
-  border: 2px solid #e94a63;
-  border-radius: 50%;
-  transition: all 0.2s ease;
-  
-  ${IngredientItem}:hover & {
-    background: #e94a63;
-  }
-`;
-
-const InstructionsContent = styled.div`
-  font-size: 1.05rem;
-  line-height: 1.8;
-  color: #333;
-  
-  ol, ul {
-    padding-left: 1.5rem;
-    
-    li {
-      margin-bottom: 1rem;
-      padding-left: 0.5rem;
-    }
-  }
-  
-  h3, h4 {
-    color: #222;
-    margin: 1.5rem 0 1rem;
-    font-weight: 700;
-  }
-  
-  @media (max-width: 768px) {
-    font-size: 1rem;
-  }
-`;
-
-const EmptyState = styled.p`
-  text-align: center;
-  color: #999;
-  font-size: 1rem;
-  padding: 2rem;
-`;
-
-const SimilarSection = styled.section`
-  margin-top: 4rem;
-`;
-
-const SectionTitle = styled.h2`
-  font-size: 2rem;
-  font-weight: 800;
-  color: #222;
-  margin-bottom: 2rem;
-  
-  @media (max-width: 768px) {
-    font-size: 1.5rem;
-  }
-`;
-
-const SimilarGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.5rem;
-`;
-
-const SimilarCard = styled(Link)`
-  display: block;
-  padding: 2rem;
-  background: white;
-  border-radius: 16px;
-  text-decoration: none;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-  transition: all 0.3s ease;
-  border: 2px solid transparent;
-  
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 40px rgba(233, 74, 99, 0.15);
-    border-color: #e94a63;
-  }
-`;
-
-const SimilarTitle = styled.h3`
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #222;
-  margin-bottom: 0.75rem;
-  line-height: 1.4;
-`;
-
-const ViewLink = styled.span`
-  color: #e94a63;
-  font-size: 0.9rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-`;
-
-export default Recipe;
+const Page = styled.div`background:var(--paper);`;
+const Hero = styled.section`position:relative;min-height:calc(100svh - 76px);display:flex;align-items:flex-end;padding:clamp(2rem,6vw,6rem);color:var(--paper);background:var(--ink);overflow:hidden;`;
+const Photo = styled.img`position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.72);`;
+const Shade = styled.div`position:absolute;inset:0;background:linear-gradient(90deg,rgba(18,17,15,.93),rgba(18,17,15,.22)),linear-gradient(0deg,rgba(18,17,15,.85),transparent 65%);`;
+const Back = styled(Link)`position:absolute;top:2rem;left:clamp(1.25rem,6vw,6rem);display:flex;align-items:center;gap:.6rem;font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;`;
+const HeroCopy = styled.div`position:relative;max-width:900px;.eyebrow{color:var(--saffron)}h1{max-width:12ch;margin:0;font-size:clamp(4rem,9vw,8.5rem);letter-spacing:-.055em}`;
+const Meta = styled.div`display:flex;gap:1.5rem;margin-top:2rem;span{display:flex;align-items:center;gap:.45rem;font-size:.65rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase}`;
+const Save = styled.button`position:absolute;right:clamp(1.25rem,6vw,6rem);bottom:clamp(2rem,6vw,6rem);display:flex;align-items:center;gap:.5rem;padding:.9rem 1rem;border:1px solid rgba(255,255,255,.35);background:${({$active})=>$active?'var(--paper)':'rgba(18,17,15,.3)'};color:${({$active})=>$active?'var(--ink)':'var(--paper)'};font-size:.62rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;backdrop-filter:blur(12px);@media(max-width:680px){top:2rem;bottom:auto}`;
+const Body = styled.main`padding:clamp(5rem,9vw,9rem) clamp(1.25rem,7vw,7.5rem);`;
+const Summary = styled.section`display:grid;grid-template-columns:.45fr 1fr;gap:2rem;max-width:980px;margin-bottom:6rem;.eyebrow{color:var(--oxblood)}div{font-family:var(--serif);font-size:clamp(1.7rem,3vw,2.6rem);line-height:1.35;color:#4f4942}p{margin:0}@media(max-width:700px){grid-template-columns:1fr}`;
+const RecipeBody = styled.section`display:grid;grid-template-columns:220px minmax(0,1fr) 260px;gap:clamp(2rem,5vw,5rem);padding-top:3rem;border-top:1px solid var(--line);@media(max-width:940px){grid-template-columns:1fr}`;
+const Tabs = styled.nav`display:flex;flex-direction:column;align-items:flex-start;gap:1rem;button{padding:.5rem 0;border:0;background:none;color:#8a8277;font-size:.63rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase}.active{color:var(--oxblood);border-bottom:1px solid var(--oxblood)}@media(max-width:940px){flex-direction:row}`;
+const Panel = styled.div`max-width:720px;`;
+const Ingredients = styled.ol`list-style:none;margin:0;padding:0;li{display:grid;grid-template-columns:3rem 1fr;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--line);font-family:var(--serif);font-size:1.35rem;span{font-family:var(--sans);font-size:.58rem;color:var(--oxblood);letter-spacing:.12em}}`;
+const Method = styled.div`font-family:var(--serif);font-size:1.28rem;line-height:1.65;ol{padding-left:1.2rem}li{padding:0 0 1.2rem .7rem}`;
+const SolNote = styled.aside`align-self:start;padding:1.5rem;border-top:3px solid var(--saffron);background:var(--ink);color:var(--paper);span{font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--saffron)}p{margin:1rem 0 0;font-family:var(--serif);font-size:1.25rem;font-style:italic;line-height:1.45}`;
+const Similar = styled.section`margin-top:8rem;.eyebrow{color:var(--oxblood)}h2{font-size:clamp(3.5rem,6vw,6rem);margin:0 0 2rem}`;
+const Grid = styled.div`display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);a{display:flex;justify-content:space-between;gap:1rem;padding:1.5rem 1rem;border-right:1px solid var(--line);font-family:var(--serif);font-size:1.4rem}@media(max-width:700px){grid-template-columns:1fr}`;

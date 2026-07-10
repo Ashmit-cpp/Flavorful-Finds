@@ -1,0 +1,8 @@
+{
+  "short_name": "Sol",
+  "name": "Sol Culinary Intelligence",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#12110f",
+  "background_color": "#f2ede4"
+}

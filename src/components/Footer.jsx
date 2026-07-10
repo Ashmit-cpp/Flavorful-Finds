@@ -1,123 +1,29 @@
-// components/Footer.js
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { GiKnifeFork } from "react-icons/gi";
-import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
+import { FiArrowUpRight } from "react-icons/fi";
 
-function Footer() {
+export default function Footer() {
   return (
-    <FooterContainer role="contentinfo">
-      <FooterContent>
-        <Logo to="/" aria-label="Flavorful Finds home">
-          <GiKnifeFork />
-          <span>Flavorful Finds</span>
-        </Logo>
-
-        <SocialIcons aria-label="social links">
-          <a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook">
-            <FaFacebookF />
-          </a>
-          <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram">
-            <FaInstagram />
-          </a>
-          <a href="https://twitter.com" target="_blank" rel="noreferrer" aria-label="Twitter">
-            <FaTwitter />
-          </a>
-          <a href="https://youtube.com" target="_blank" rel="noreferrer" aria-label="YouTube">
-            <FaYoutube />
-          </a>
-        </SocialIcons>
-      </FooterContent>
-
-      <Copyright>
-        &copy; {new Date().getFullYear()} Flavorful Finds
-      </Copyright>
-    </FooterContainer>
+    <FooterShell>
+      <Top>
+        <Brand><Sun aria-hidden="true" />Sol</Brand>
+        <Statement>Eat well.<br/><em>Live warmly.</em></Statement>
+        <Newsletter><span>Notes from the Sol kitchen</span><p>Seasonal ideas and considered recipes, occasionally.</p><form onSubmit={(e) => e.preventDefault()}><input type="email" placeholder="Email address" aria-label="Email address"/><button aria-label="Subscribe"><FiArrowUpRight /></button></form></Newsletter>
+      </Top>
+      <Bottom>
+        <span>© {new Date().getFullYear()} Sol Culinary Studio</span>
+        <nav><Link to="/cuisine/Italian">The edit</Link><Link to="/cuisine/Indian">Cuisines</Link><a href="/#sol-studio">Ask Sol</a></nav>
+        <span>Made for the pleasure of dinner</span>
+      </Bottom>
+    </FooterShell>
   );
 }
 
-/* ----- compact styles ----- */
-
-const FooterContainer = styled.footer`
-  background: #fff;
-  border-top: 1px solid #f3f4f6;
-  padding: 0.9rem 0.75rem;
-  margin-top: auto;
-  font-family: 'Poppins', sans-serif;
-`;
-
-const FooterContent = styled.div`
-  max-width: 920px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-
-  @media (max-width: 480px) {
-    gap: 0.5rem;
-  }
-`;
-
-const Logo = styled(Link)`
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  text-decoration: none;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #374151;
-
-  svg {
-    font-size: 1.125rem;
-    color: #e94a63;
-    line-height: 1;
-  }
-
-  span {
-    display: inline-block;
-    vertical-align: middle;
-  }
-`;
-
-const SocialIcons = styled.div`
-  display: flex;
-  gap: 0.5rem;
-
-  a {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.2rem;
-    height: 2.2rem;
-    border-radius: 8px;
-    background: #f7f7f8;
-    color: #6b7280;
-    font-size: 0.9rem;
-    transition: transform 0.14s ease, background 0.14s ease, color 0.14s ease;
-    border: 1px solid transparent;
-    text-decoration: none;
-
-    &:hover,
-    &:focus {
-      background: #e94a63;
-      color: #fff;
-      transform: translateY(-2px);
-      outline: none;
-      box-shadow: 0 6px 12px rgba(233, 74, 99, 0.08);
-    }
-  }
-`;
-
-const Copyright = styled.div`
-  max-width: 920px;
-  margin: 0.45rem auto 0;
-  text-align: center;
-  color: #9ca3af;
-  font-size: 0.75rem;
-  padding-top: 0.45rem;
-`;
-
-export default Footer;
+const FooterShell = styled.footer`background:var(--ink);color:var(--paper);padding:clamp(4rem,8vw,8rem) clamp(1.25rem,6vw,6rem) 2rem;`;
+const Top = styled.div`display:grid;grid-template-columns:.6fr 1.2fr .8fr;gap:4rem;align-items:start;padding-bottom:5rem;@media(max-width:850px){grid-template-columns:1fr;gap:2.5rem}`;
+const Brand = styled(Link)`display:flex;align-items:center;gap:.8rem;font-family:var(--serif);font-size:2.6rem;`;
+const Sun = styled.i`width:30px;height:30px;border-radius:50%;border:1px solid var(--saffron);box-shadow:inset 0 0 0 9px var(--ink),inset 0 0 0 10px var(--saffron);`;
+const Statement = styled.h2`margin:0;font-size:clamp(4rem,8vw,8rem);letter-spacing:-.05em;line-height:.75;em{color:var(--saffron);font-weight:400}`;
+const Newsletter = styled.div`span{font-size:.64rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--saffron)}p{margin:1rem 0;color:rgba(242,237,228,.52);font-size:.8rem}form{display:flex;border-bottom:1px solid rgba(242,237,228,.3)}input{flex:1;padding:.8rem 0;border:0;background:none;color:var(--paper);outline:0}button{border:0;background:none;color:var(--paper);font-size:1.2rem}`;
+const Bottom = styled.div`display:flex;justify-content:space-between;gap:2rem;padding-top:1.5rem;border-top:1px solid rgba(242,237,228,.12);font-size:.57rem;letter-spacing:.13em;text-transform:uppercase;color:rgba(242,237,228,.44);nav{display:flex;gap:1.5rem;color:var(--paper)}@media(max-width:750px){flex-direction:column;nav{order:-1}}`;
